@@ -1,0 +1,17 @@
+{
+  "name": "Dojo · Plan semanal",
+  "short_name": "Dojo",
+  "description": "Mi plan semanal de entrenamiento: movilidad, potencia, taekwondo y preparación para MMA.",
+  "lang": "es",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fbfaf5",
+  "theme_color": "#6b4428",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

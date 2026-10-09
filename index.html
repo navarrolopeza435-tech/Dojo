@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#6b4428">
+<title>Dojo · Plan semanal</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Dojo">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --washi:#fbfaf5; --washi-2:#f3efe4; --hinoki:#c9a27a; --hinoki-2:#dcc1a0;
+  --keyaki:#6b4428; --keyaki-2:#55351f; --sumi:#29211b; --sumi-2:#5e5247;
+  --sakura:#f3b8c8; --sakura-deep:#c94f73; --shu:#b7372c;
+  --floor-a:#b98a5e; --floor-b:#a97b51; --floor-line:#8d6440;
+  --card:#fbfaf5; --line:#e6dccb;
+  --fig-ink:#29211b; --fig-far:#b2a393; --fig-prop:#c2410c; --fig-alt:#4d7c6f;
+  --fig-floor:#cdbca4; --fig-arrow:#c94f73; --fig-muted:#7a6c5d; --fig-bag:#eadbc6;
+  --serif:"Shippori Mincho B1","Hiragino Mincho ProN","Yu Mincho","Noto Serif JP","Noto Serif CJK JP",Georgia,serif;
+  --sans:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --washi:#221d18; --washi-2:#2a241e; --hinoki:#7d5f42; --hinoki-2:#5f4832;
+    --keyaki:#3d2615; --keyaki-2:#2e1c0f; --sumi:#efe7da; --sumi-2:#b9ab99;
+    --sakura:#e79ab0; --sakura-deep:#ee7f9f; --shu:#e0574a;
+    --floor-a:#3b2a1d; --floor-b:#34251a; --floor-line:#2a1d13;
+    --card:#221d18; --line:#3a3128;
+    --fig-ink:#efe7da; --fig-far:#857766; --fig-prop:#f08a4b; --fig-alt:#7fb3a4;
+    --fig-floor:#5a4a3a; --fig-arrow:#ee7f9f; --fig-muted:#a99a88; --fig-bag:#4a3b2c;
+  }
+}
+:root[data-theme="dark"]{
+  --washi:#221d18; --washi-2:#2a241e; --hinoki:#7d5f42; --hinoki-2:#5f4832;
+  --keyaki:#3d2615; --keyaki-2:#2e1c0f; --sumi:#efe7da; --sumi-2:#b9ab99;
+  --sakura:#e79ab0; --sakura-deep:#ee7f9f; --shu:#e0574a;
+  --floor-a:#3b2a1d; --floor-b:#34251a; --floor-line:#2a1d13;
+  --card:#221d18; --line:#3a3128;
+  --fig-ink:#efe7da; --fig-far:#857766; --fig-prop:#f08a4b; --fig-alt:#7fb3a4;
+  --fig-floor:#5a4a3a; --fig-arrow:#ee7f9f; --fig-muted:#a99a88; --fig-bag:#4a3b2c;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{
+  margin:0; font-family:var(--sans); color:var(--sumi); line-height:1.55;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 74px, var(--floor-line) 74px 76px),
+    repeating-linear-gradient(90deg, var(--floor-a) 0 38px, var(--floor-b) 38px 76px);
+  background-attachment:fixed;
+  min-height:100vh;
+}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:3px solid var(--sakura-deep);outline-offset:2px}
+
+/* ---------- shoji + sakura header ---------- */
+.shoji{
+  position:relative; overflow:hidden; height:250px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 calc(25% - 3px), var(--hinoki-2) calc(25% - 3px) 25%),
+    repeating-linear-gradient(0deg, transparent 0 64px, var(--hinoki-2) 64px 67px),
+    var(--washi);
+  border-bottom:0;
+}
+.shoji::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg, transparent 60%, rgba(107,68,40,.10));pointer-events:none}
+.tree{position:absolute;right:-4px;bottom:0;width:min(460px,100%);height:auto}
+.scroll{
+  position:absolute;left:18px;top:22px;width:62px;padding:14px 0 18px;
+  background:var(--washi); border:1px solid var(--hinoki);
+  box-shadow:0 6px 14px rgba(41,33,27,.12);
+  display:flex;flex-direction:column;align-items:center;gap:10px;z-index:2;
+}
+.scroll::before,.scroll::after{content:"";position:absolute;left:-6px;right:-6px;height:7px;background:var(--keyaki);border-radius:3px}
+.scroll::before{top:-5px}.scroll::after{bottom:-5px}
+.scroll h1{
+  margin:0;font-family:var(--serif);font-weight:800;font-size:34px;line-height:1.05;
+  writing-mode:vertical-rl;letter-spacing:.12em;color:var(--sumi);inline-size:max-content;
+}
+.seal{width:24px;height:24px;background:var(--shu);color:#fff;font-family:var(--serif);font-size:11px;
+  display:grid;place-items:center;border-radius:3px;line-height:1;transform:rotate(-4deg)}
+.intro{position:absolute;left:96px;top:30px;max-width:170px;z-index:2}
+.intro p{margin:0;font-size:13px;color:var(--sumi-2);line-height:1.5}
+.intro strong{display:block;font-family:var(--serif);font-size:19px;color:var(--sumi);line-height:1.25;margin-bottom:6px;font-weight:800}
+
+.petals{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:3}
+.petal{position:absolute;top:-20px;width:10px;height:8px;background:var(--sakura);
+  border-radius:100% 0 100% 0;opacity:.9;animation:fall linear infinite}
+@keyframes fall{
+  0%{transform:translate3d(0,-20px,0) rotate(0)}
+  50%{transform:translate3d(-30px,150px,0) rotate(160deg)}
+  100%{transform:translate3d(-10px,320px,0) rotate(320deg)}
+}
+@media (prefers-reduced-motion: reduce){ .petal{display:none} }
+
+/* ---------- beam + plaques (sticky nav) ---------- */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20}
+.beam{height:18px;background:
+   repeating-linear-gradient(0deg, rgba(0,0,0,.08) 0 1px, transparent 1px 5px),
+   linear-gradient(180deg, var(--keyaki) , var(--keyaki-2));
+  box-shadow:0 3px 6px rgba(0,0,0,.25)}
+.plaques{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;padding:0 10px 12px;
+  background:linear-gradient(180deg, var(--floor-line), var(--floor-b));box-shadow:0 6px 10px rgba(0,0,0,.22)}
+.plaque{
+  position:relative;border:0;padding:8px 0 6px;margin-top:10px;
+  background:linear-gradient(180deg,var(--hinoki-2),var(--hinoki));
+  color:#2b1d12;border-radius:3px 3px 6px 6px;
+  box-shadow:0 3px 5px rgba(0,0,0,.25), inset 0 0 0 1px rgba(0,0,0,.08);
+  display:flex;flex-direction:column;align-items:center;gap:1px;min-height:58px;
+}
+.plaque::before{content:"";position:absolute;top:-10px;left:50%;width:1.5px;height:10px;background:rgba(0,0,0,.35)}
+.plaque .k{font-family:var(--serif);font-weight:800;font-size:22px;line-height:1.1}
+.plaque .s{font-size:11px;font-weight:500;opacity:.85}
+.plaque[aria-selected="true"]{background:var(--washi);color:var(--sumi);transform:translateY(3px);
+  box-shadow:0 5px 10px rgba(0,0,0,.3), inset 0 0 0 2px var(--sakura-deep)}
+.plaque .today{position:absolute;right:-4px;top:-6px;width:16px;height:16px;background:var(--shu);color:#fff;
+  font-family:var(--serif);font-size:9px;display:grid;place-items:center;border-radius:2px;transform:rotate(6deg)}
+
+/* ---------- day ---------- */
+main{max-width:640px;margin:0 auto;padding:6px 12px 40px}
+.dayhead{background:var(--washi);border:1px solid var(--hinoki);padding:16px 16px 14px;margin:6px 0 14px;
+  box-shadow:0 8px 18px rgba(0,0,0,.18);position:relative}
+.dayhead .jp{font-family:var(--serif);font-size:15px;color:var(--sakura-deep);font-weight:600;letter-spacing:.08em}
+.dayhead h2{margin:2px 0 4px;font-family:var(--serif);font-weight:800;font-size:25px;line-height:1.2}
+.dayhead .what{margin:0;font-size:15px;color:var(--sumi-2)}
+.dayhead .row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;flex-wrap:wrap}
+.meta{font-size:13px;color:var(--sumi-2)}
+.btn{border:0;border-radius:4px;padding:12px 18px;font-weight:700;font-size:15px}
+.btn-main{background:var(--sumi);color:var(--washi)}
+.btn-main:active{transform:translateY(1px)}
+.btn-ghost{background:transparent;border:1px solid var(--hinoki);color:var(--sumi)}
+.btn-soft{background:var(--washi-2);color:var(--sumi)}
+
+.block{background:var(--card);margin:0 0 14px;border-top:5px solid var(--keyaki);
+  box-shadow:0 6px 14px rgba(0,0,0,.16)}
+.block h3{margin:0;padding:12px 14px 10px;font-family:var(--serif);font-weight:800;font-size:18px;
+  display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:1px solid var(--line)}
+.block h3 small{font-family:var(--sans);font-weight:500;font-size:12.5px;color:var(--sumi-2);white-space:nowrap}
+.block .bnote{margin:0;padding:8px 14px;font-size:13px;color:var(--sumi-2);background:var(--washi-2);border-bottom:1px solid var(--line)}
+.ex{display:grid;grid-template-columns:104px 1fr;gap:4px 12px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.ex:last-child{border-bottom:0}
+.ex .pic{width:104px;height:78px;background:var(--washi-2);border:1px solid var(--line);border-radius:2px}
+.ex h4{margin:0;font-size:16px;font-weight:700;line-height:1.3}
+.ex .dose{margin:3px 0 0;font-size:13px;color:var(--sakura-deep);font-weight:700}
+.ex .rest{font-size:12.5px;color:var(--sumi-2);font-weight:500}
+.ex .desc{grid-column:1/-1;margin:6px 0 0;font-size:14px;color:var(--sumi-2);line-height:1.55}
+.ex .acts{grid-column:1/-1;display:flex;gap:8px;margin-top:8px;align-items:center}
+.ex .go{background:transparent;border:1px solid var(--hinoki);border-radius:4px;padding:6px 12px;font-size:13px;font-weight:700}
+.ex.done h4::after{content:"  済";font-family:var(--serif);color:var(--shu);font-size:14px}
+.check{margin-left:auto;font-size:12.5px;color:var(--sumi-2);display:flex;align-items:center;gap:6px;background:none;border:0;padding:6px 0}
+.check .box{width:20px;height:20px;border:1.5px solid var(--hinoki);border-radius:3px;display:grid;place-items:center;font-size:13px;color:var(--shu);font-weight:800}
+
+.tips{background:var(--card);border-left:5px solid var(--sakura-deep);padding:12px 14px;box-shadow:0 6px 14px rgba(0,0,0,.16)}
+.tips h3{margin:0 0 6px;font-family:var(--serif);font-size:17px}
+.tips ul{margin:0;padding-left:18px;font-size:14px;color:var(--sumi-2)}
+.tips li{margin:4px 0}
+footer{text-align:center;font-size:12px;color:rgba(255,255,255,.75);padding:8px 0 20px}
+
+/* figures */
+.fig{display:block;width:100%;height:100%}
+.fig .k,.fig .f,.fig .p,.fig .a,.fig .w,.fig .r,.fig .tw,.fig .st,.fig .br,.fig .fl{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.fig .k{stroke:var(--fig-ink);stroke-width:2.4}.fig .f{stroke:var(--fig-far);stroke-width:2.2}
+.fig .p{stroke:var(--fig-prop);stroke-width:1.8}.fig .tw{stroke:var(--fig-prop);stroke-width:3}
+.fig .a{stroke:var(--fig-alt);stroke-width:1.5;stroke-dasharray:3 2}
+.fig .w,.fig .fl{stroke:var(--fig-floor);stroke-width:2.2}
+.fig .r{stroke:var(--fig-arrow);stroke-width:1.2}.fig .rh{fill:var(--fig-arrow)}
+.fig .hd{fill:var(--washi-2);stroke:var(--fig-ink);stroke-width:2}
+.fig .pf{fill:var(--fig-prop)}.fig .rg{fill:none;stroke:var(--fig-prop);stroke-width:1.6}
+.fig .st{stroke:var(--fig-muted);stroke-width:1}.fig .br{stroke:var(--fig-prop);stroke-width:3}
+.fig .bag{fill:var(--fig-bag);stroke:var(--fig-ink);stroke-width:1.2}.fig .bn{fill:var(--fig-floor)}
+.fig .vs{fill:var(--fig-prop);opacity:.55}
+.fig .tx{font-size:4.6px;fill:var(--fig-muted);font-family:var(--sans)}
+
+/* ---------- session overlay ---------- */
+.session{position:fixed;inset:0;z-index:50;background:var(--washi);display:none;flex-direction:column;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.session.open{display:flex}
+.s-top{display:flex;align-items:center;gap:10px;padding:10px 14px 8px;border-bottom:1px solid var(--line);
+  background:
+   repeating-linear-gradient(90deg, transparent 0 calc(20% - 2px), var(--line) calc(20% - 2px) 20%), var(--washi)}
+.s-top .x{border:0;background:var(--washi-2);width:38px;height:38px;border-radius:4px;font-size:18px}
+.s-top .t{flex:1;min-width:0}
+.s-top .t b{display:block;font-family:var(--serif);font-size:15px}
+.s-top .t span{font-size:12px;color:var(--sumi-2)}
+.prog{height:4px;background:var(--line)}
+.prog i{display:block;height:100%;width:0;background:var(--sakura-deep);transition:width .3s}
+.s-body{flex:1;overflow:auto;padding:12px 18px 8px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.s-pic{width:min(250px,64vw);aspect-ratio:4/3;background:var(--washi-2);border:1px solid var(--line);flex-shrink:0}
+.s-block{margin:10px 0 0;font-size:12.5px;color:var(--sumi-2)}
+.s-name{margin:2px 0 4px;font-family:var(--serif);font-weight:800;font-size:25px;line-height:1.2}
+.chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.chip{font-size:12.5px;font-weight:700;padding:3px 9px;border-radius:20px;background:var(--washi-2);border:1px solid var(--line)}
+.chip.hot{background:var(--sumi);color:var(--washi);border-color:var(--sumi)}
+.enso{position:relative;width:min(200px,52vw);aspect-ratio:1;margin:10px auto 6px;flex-shrink:0}
+.enso svg{width:100%;height:100%;transform:rotate(-90deg)}
+.enso .bg{fill:none;stroke:var(--line);stroke-width:9}
+.enso .fg{fill:none;stroke:var(--sumi);stroke-width:11;stroke-linecap:round;transition:stroke-dashoffset .15s linear}
+.enso.rest .fg{stroke:var(--sakura-deep)}
+.enso .mid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.enso .num{font-family:var(--serif);font-weight:800;font-size:clamp(40px,13vw,56px);line-height:1;font-variant-numeric:tabular-nums}
+.enso .lbl{font-size:12.5px;color:var(--sumi-2);margin-top:4px}
+.s-desc{max-width:460px;font-size:14px;color:var(--sumi-2);margin:4px 0 0;text-align:left}
+.s-bar{display:grid;grid-template-columns:1fr 2fr 1fr;gap:8px;padding:10px 14px 12px;border-top:1px solid var(--line)}
+.s-bar .btn{padding:14px 8px;font-size:15px}
+.s-bar .btn-main{font-size:17px}
+
+.cheer{display:flex;align-items:center;justify-content:center;gap:16px;margin:4px 0 2px;min-height:150px}
+.cheer .v{font-family:var(--serif);font-weight:800;font-size:40px;line-height:1.05;writing-mode:vertical-rl;letter-spacing:.06em;color:var(--sumi);flex:none;inline-size:max-content}
+.cheer .h{text-align:left;max-width:180px}
+.cheer .ro{font-family:var(--serif);font-weight:800;font-size:19px;color:var(--sakura-deep);line-height:1.2}
+.cheer .es{font-size:14px;color:var(--sumi-2);margin-top:4px}
+.cheer.special{flex-direction:column;gap:6px}
+.cheer.special .big{font-family:var(--serif);font-weight:800;font-size:clamp(26px,8vw,36px);line-height:1.15;color:var(--sumi);max-width:320px}
+.cheer.special .who{font-size:13px;color:var(--sakura-deep);font-weight:700}
+.cheer-anim{animation:ink .7s ease-out}
+@keyframes ink{from{opacity:0;filter:blur(6px);transform:scale(.96)}to{opacity:1;filter:none;transform:none}}
+@media (prefers-reduced-motion: reduce){.cheer-anim{animation:none}}
+.next{display:flex;align-items:center;gap:10px;margin:8px auto 0;padding:8px 10px;border:1px solid var(--line);background:var(--washi-2);max-width:360px;width:100%;text-align:left}
+.next .np{width:64px;height:48px;flex-shrink:0}
+.next small{display:block;font-size:12px;color:var(--sumi-2)}
+.next b{font-size:14.5px}
+.prep{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(251,250,245,.0);pointer-events:none}
+.finish .big{font-family:var(--serif);font-weight:800;font-size:40px;writing-mode:vertical-rl;line-height:1.05;margin:10px auto;inline-size:max-content}
+.finish p{color:var(--sumi-2);max-width:320px}
+.s-petals{position:absolute;inset:0;pointer-events:none;overflow:hidden;display:none}
+.session.fin .s-petals{display:block}
+.ask{position:fixed;inset:0;z-index:70;background:rgba(20,15,10,.55);display:none;align-items:center;justify-content:center;padding:20px}
+.ask.open{display:flex}
+.ask-box{background:var(--washi);border-top:5px solid var(--keyaki);padding:18px;max-width:340px;width:100%;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+.ask-box h3{margin:0 0 6px;font-family:var(--serif);font-size:20px}
+.ask-box p{margin:0 0 14px;font-size:14px;color:var(--sumi-2)}
+.ask-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--sumi);color:var(--washi);padding:9px 14px;border-radius:4px;font-size:13.5px;z-index:60;display:none}
+@media (min-width:560px){ .shoji{height:290px} }
+</style>
+</head>
+<body>
+
+<header class="shoji" aria-label="Dojo">
+  <div class="scroll"><h1>道場</h1><div class="seal" aria-hidden="true">押忍</div></div>
+    <svg class="tree" viewBox="0 0 420 268" aria-hidden="true">
+    <defs>
+      <symbol id="fl" viewBox="-10 -10 20 20">
+        <g fill="currentColor"><circle cx="0" cy="-4.6" r="4"/><circle cx="4.4" cy="-1.4" r="4"/><circle cx="2.7" cy="3.7" r="4"/><circle cx="-2.7" cy="3.7" r="4"/><circle cx="-4.4" cy="-1.4" r="4"/></g>
+        <circle r="1.8" fill="#b23a5e"/>
+      </symbol>
+    </defs>
+    <g fill="none" stroke="#4a3426" stroke-linecap="round">
+      <path d="M418 272 C 385 232, 372 196, 352 160" stroke-width="20"/>
+      <path d="M360 172 C 320 140, 270 128, 214 104" stroke-width="10"/>
+      <path d="M270 126 C 250 100, 232 80, 206 64" stroke-width="6"/>
+      <path d="M354 162 C 352 120, 334 90, 312 58" stroke-width="9"/>
+      <path d="M334 96 C 360 72, 382 60, 404 40" stroke-width="5"/>
+      <path d="M218 106 C 182 98, 152 100, 118 88" stroke-width="5.5"/>
+      <path d="M164 100 C 152 118, 140 128, 122 136" stroke-width="3.5"/>
+      <path d="M312 58 C 302 42, 290 34, 272 28" stroke-width="3.5"/>
+      <path d="M240 112 C 236 132, 228 148, 214 160" stroke-width="3"/>
+    </g>
+    <g id="blooms"></g>
+  </svg>
+  <div class="petals" id="petals"></div>
+</header>
+
+<nav class="nav" aria-label="Días de la semana">
+  <div class="beam"></div>
+  <div class="plaques" role="tablist" id="plaques"></div>
+</nav>
+
+<main id="day"></main>
+<footer>七転び八起き</footer>
+
+<section class="session" id="session" aria-live="polite">
+  <div class="s-top">
+    <button class="x" id="sClose" aria-label="Salir del entrenamiento">✕</button>
+    <div class="t"><b id="sDay"></b><span id="sCount"></span></div>
+    <button class="x" id="sSound" aria-label="Pitidos activados">🔔</button>
+  </div>
+  <div class="prog"><i id="sProg"></i></div>
+  <div class="s-body" id="sBody"></div>
+  <div class="s-bar" id="sBar"></div>
+  <div class="s-petals" id="sPetals"></div>
+</section>
+<div class="ask" id="ask" role="dialog" aria-modal="true" aria-labelledby="askT">
+  <div class="ask-box"><h3 id="askT">¿Salir del entrenamiento?</h3><p>Lo que ya hayas terminado queda marcado como hecho.</p>
+  <div class="ask-btns"><button class="btn btn-soft" id="askNo">Seguir entrenando</button><button class="btn btn-main" id="askYes">Salir</button></div></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const POSES = {"car_hombro": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"f\" points=\"50,25 56,37 56,47\"/><polyline class=\"k\" points=\"50,23 50,45\"/><polyline class=\"k\" points=\"50,45 46,58 46,71\"/><polyline class=\"k\" points=\"50,45 55,58 56,71\"/><polyline class=\"k\" points=\"50,23 50,17\"/><circle class=\"hd\" cx=\"50\" cy=\"13\" r=\"5\"/><polyline class=\"k\" points=\"50,25 60,19 66,9\"/><polyline class=\"r\" points=\"74.12,24.0 75.42,20.98 75.98,17.73 75.77,14.45 74.79,11.31 73.11,8.48 70.81,6.12 68.03,4.36 64.91,3.31 61.63,3.0 58.38,3.48 55.32,4.7 52.63,6.6 50.46,9.07 48.93,11.98 48.12,15.17 48.08,18.46 48.8,21.67 50.26,24.62 52.36,27.16 55.0,29.12\"/><polygon class=\"rh\" points=\"55.0,29.12 53.8,25.94 51.76,28.09\"/>", "muneca": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"f\" points=\"54,71 50,45\"/><polyline class=\"k\" points=\"46,71 50,45\"/><polyline class=\"k\" points=\"50,45 50,23\"/><circle class=\"hd\" cx=\"50\" cy=\"15\" r=\"5\"/><polyline class=\"k\" points=\"50,25 62,29 74,27\"/><polyline class=\"f\" points=\"50,25 61,31 72,30\"/><polyline class=\"r\" points=\"82.58,25.61 81.7,23.94 80.41,22.56 78.79,21.58 76.97,21.07 75.09,21.06 73.26,21.56 71.64,22.52 70.34,23.89 69.44,25.55 69.03,27.39 69.12,29.28 69.71,31.07 70.76,32.64 72.19,33.87 73.9,34.68 75.76,35.0 77.63,34.81 79.39,34.12 80.91,32.99 82.06,31.5\"/><polygon class=\"rh\" points=\"82.06,31.5 78.84,32.59 80.92,34.7\"/><text class=\"tx\" x=\"52\" y=\"9\">círculos de muñeca</text>", "cuello_circ": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"f\" points=\"54,71 50,45\"/><polyline class=\"k\" points=\"46,71 50,45\"/><polyline class=\"k\" points=\"50,45 50,23\"/><circle class=\"hd\" cx=\"50\" cy=\"15\" r=\"5\"/><polyline class=\"f\" points=\"50,25 55,37 55,45\"/><polyline class=\"k\" points=\"50,25 45,37 45,45\"/><polyline class=\"r\" points=\"58.43,22.07 59.84,19.91 60.72,17.47 61.0,14.9 60.67,12.34 59.76,9.92 58.3,7.78 56.39,6.04 54.12,4.8 51.63,4.12 49.04,4.04 46.51,4.57 44.17,5.67 42.15,7.29 40.57,9.33 39.51,11.69 39.03,14.23 39.15,16.82 39.87,19.3 41.16,21.54 42.93,23.43\"/><polygon class=\"rh\" points=\"42.93,23.43 42.3,20.09 39.92,21.85\"/>", "cat_cow": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"f\" points=\"38,71 38,53 36,45\"/><polyline class=\"k\" points=\"30,71 30,55 32,45\"/><polyline class=\"k\" points=\"32,45 44,35 58,35 70,45\"/><polyline class=\"k\" points=\"70,45 72,71 88,71\"/><circle class=\"hd\" cx=\"24\" cy=\"48\" r=\"5\"/><polyline class=\"a\" points=\"32,45 44,53 58,53 70,45\"/><text class=\"tx\" x=\"42\" y=\"29\">gato</text><text class=\"tx\" x=\"42\" y=\"62\">vaca</text>", "cadera_car": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"f\" points=\"32,45 28,71\"/><polyline class=\"k\" points=\"30,71 30,55 32,45\"/><polyline class=\"k\" points=\"32,45 50,43 68,45\"/><circle class=\"hd\" cx=\"22\" cy=\"43\" r=\"5\"/><polyline class=\"f\" points=\"68,45 70,71 86,71\"/><polyline class=\"k\" points=\"68,45 82,33 76,45\"/><polyline class=\"r\" points=\"65.66,38.76 65.04,35.96 65.17,33.09 66.03,30.35 67.57,27.93 69.69,25.99 72.24,24.66 75.04,24.04 77.91,24.17 80.65,25.03 83.07,26.57 85.01,28.69 86.34,31.24 86.96,34.04 86.83,36.91 85.97,39.65 84.43,42.07 82.31,44.01 79.76,45.34 76.96,45.96 74.09,45.83\"/><polygon class=\"rh\" points=\"74.09,45.83 77.27,47.04 77.01,44.09\"/>", "tobillo_car": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"f\" points=\"46,23 40,35 36,43\"/><polyline class=\"k\" points=\"50,23 50,45\"/><polyline class=\"k\" points=\"50,45 50,58 50,71\"/><polyline class=\"k\" points=\"50,45 66,49 66,63\"/><polyline class=\"k\" points=\"66,63 70,66\"/><polyline class=\"k\" points=\"50,23 50,19\"/><circle class=\"hd\" cx=\"50\" cy=\"14\" r=\"5\"/><polyline class=\"k\" points=\"50,25 58,35 62,45\"/><polyline class=\"r\" points=\"70.0,60.0 68.25,60.22 66.61,60.88 65.18,61.92 64.06,63.29 63.32,64.9 63.01,66.63 63.14,68.4 63.71,70.07 64.68,71.55 65.98,72.73 67.55,73.56 69.27,73.96 71.03,73.92 72.74,73.44 74.26,72.55 75.52,71.31 76.42,69.79 76.91,68.1 76.97,66.33 76.58,64.61\"/><polygon class=\"rh\" points=\"76.58,64.61 75.4,67.8 78.34,67.51\"/>", "beast": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"f\" points=\"38,69 38,53 38,43\"/><polyline class=\"f\" points=\"84,60 94,71\"/><polyline class=\"k\" points=\"30,71 30,55 34,43\"/><polyline class=\"k\" points=\"34,43 66,43\"/><circle class=\"hd\" cx=\"27\" cy=\"36\" r=\"5\"/><polyline class=\"k\" points=\"66,43 78,58 90,71\"/><text class=\"tx\" x=\"8\" y=\"13\">rodillas a un palmo del suelo</text><polyline class=\"r\" points=\"78,25 78,53\"/><polygon class=\"rh\" points=\"78,53 79.48,49.94 76.52,49.94\"/>", "bear": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"f\" points=\"40,71 42,51 34,39\"/><polyline class=\"k\" points=\"24,71 30,51 34,39\"/><polyline class=\"k\" points=\"34,39 62,39\"/><circle class=\"hd\" cx=\"26\" cy=\"32\" r=\"5\"/><polyline class=\"f\" points=\"62,39 76,51 78,71\"/><polyline class=\"k\" points=\"62,39 72,53 88,71\"/><polyline class=\"r\" points=\"36,13 14,13\"/><polygon class=\"rh\" points=\"14,13 17.06,14.48 17.06,11.52\"/><text class=\"tx\" x=\"40\" y=\"15\">avanza</text>", "cangrejo": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"f\" points=\"28,71 30,57 34,45\"/><polyline class=\"k\" points=\"34,71 34,57 36,45\"/><polyline class=\"k\" points=\"36,45 58,41\"/><circle class=\"hd\" cx=\"26\" cy=\"41\" r=\"5\"/><polyline class=\"k\" points=\"58,41 78,37 80,71\"/><polyline class=\"f\" points=\"58,41 70,35 68,71\"/><polyline class=\"k\" points=\"36,45 38,29 28,17 14,15\"/><polyline class=\"r\" points=\"31.92,11.18 32.75,11.07 33.58,11.01 34.42,11.01 35.25,11.07 36.08,11.18 36.9,11.36 37.71,11.59 38.5,11.87 39.26,12.21 40.0,12.61 40.71,13.05 41.39,13.54 42.03,14.08 42.63,14.66 43.19,15.29 43.71,15.95 44.18,16.64 44.6,17.37 44.96,18.12 45.28,18.9\"/><polygon class=\"rh\" points=\"45.28,18.9 45.38,15.5 42.68,16.7\"/>", "lagarto": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"f\" points=\"60,55 44,51 46,71\"/><polyline class=\"k\" points=\"60,55 94,69\"/><polyline class=\"k\" points=\"60,55 44,45\"/><polyline class=\"k\" points=\"44,45 36,57 28,71\"/><circle class=\"hd\" cx=\"37\" cy=\"38\" r=\"5\"/><polyline class=\"r\" points=\"66,31 50,42\"/><polygon class=\"rh\" points=\"50,42 53.36,41.48 51.68,39.05\"/><text class=\"tx\" x=\"58\" y=\"27\">pecho abajo</text>", "mono": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"f\" points=\"46,71 32,51 54,61\"/><polyline class=\"k\" points=\"52,71 38,51 58,61\"/><polyline class=\"k\" points=\"52,71 44,71\"/><polyline class=\"k\" points=\"58,61 44,41\"/><polyline class=\"k\" points=\"44,41 36,55 28,71\"/><circle class=\"hd\" cx=\"37\" cy=\"33\" r=\"5\"/><polyline class=\"r\" points=\"72,43 90,43\"/><polygon class=\"rh\" points=\"90,43 86.94,41.52 86.94,44.48\"/><polyline class=\"r\" points=\"72,43 54,43\"/><polygon class=\"rh\" points=\"54,43 57.06,44.48 57.06,41.52\"/>", "rana": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"50,59 22,51 20,71\"/><polyline class=\"k\" points=\"50,59 78,51 80,71\"/><polyline class=\"k\" points=\"50,59 50,37\"/><polyline class=\"k\" points=\"42,37 58,37\"/><polyline class=\"k\" points=\"42,37 38,53 36,71\"/><polyline class=\"k\" points=\"58,37 62,53 64,71\"/><circle class=\"hd\" cx=\"50\" cy=\"29\" r=\"5\"/><polyline class=\"r\" points=\"24,41 12,41\"/><polygon class=\"rh\" points=\"12,41 15.06,42.48 15.06,39.52\"/><polyline class=\"r\" points=\"76,41 88,41\"/><polygon class=\"rh\" points=\"88,41 84.94,39.52 84.94,42.48\"/><text class=\"tx\" x=\"30\" y=\"11\">rodillas hacia fuera</text>", "transicion": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"f\" points=\"36,71 36,55 36,43\"/><polyline class=\"k\" points=\"30,71 30,55 34,43\"/><polyline class=\"k\" points=\"34,43 64,43\"/><circle class=\"hd\" cx=\"24\" cy=\"33\" r=\"5\"/><polyline class=\"k\" points=\"64,43 76,58 88,71\"/><polyline class=\"f\" points=\"64,43 80,55 82,71\"/><polyline class=\"k\" points=\"34,43 42,29 46,15\"/><polyline class=\"r\" points=\"57.86,27.0 56.94,25.6 55.89,24.29 54.71,23.11 53.4,22.06 52.0,21.14 50.51,20.38 48.94,19.78 47.33,19.35 45.67,19.09 44.0,19.0 42.33,19.09 40.67,19.35 39.06,19.78 37.49,20.38 36.0,21.14 34.6,22.06 33.29,23.11 32.11,24.29 31.06,25.6 30.14,27.0\"/><polygon class=\"rh\" points=\"30.14,27.0 33.14,25.39 30.75,23.65\"/>", "90_90": "<polyline class=\"k\" points=\"50,53 50,39\"/><polyline class=\"k\" points=\"43,40 57,40\"/><circle class=\"hd\" cx=\"50\" cy=\"33\" r=\"5\"/><polyline class=\"k\" points=\"50,53 24,29 68,25\"/><polyline class=\"k\" points=\"50,53 76,53 76,71\"/><text class=\"tx\" x=\"4\" y=\"9\">vista desde arriba</text>", "goblet": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"f\" points=\"52,71 36,49 62,59\"/><polyline class=\"k\" points=\"56,71 40,49 62,59\"/><polyline class=\"k\" points=\"60,71 46,71\"/><polyline class=\"k\" points=\"62,59 56,33\"/><circle class=\"hd\" cx=\"55\" cy=\"24\" r=\"5\"/><polyline class=\"k\" points=\"56,33 50,45 46,37\"/><polyline class=\"p\" points=\"42,33.6 42,30.4 46,30.4 46,33.6\"/><circle class=\"pf\" cx=\"44\" cy=\"36\" r=\"3.3\"/><polyline class=\"r\" points=\"26,31 26,51\"/><polygon class=\"rh\" points=\"26,51 27.48,47.94 24.52,47.94\"/>", "sentadilla": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"f\" points=\"52,71 36,49 62,59\"/><polyline class=\"k\" points=\"56,71 40,49 62,59\"/><polyline class=\"k\" points=\"60,71 46,71\"/><polyline class=\"k\" points=\"62,59 56,33\"/><circle class=\"hd\" cx=\"55\" cy=\"24\" r=\"5\"/><polyline class=\"k\" points=\"57,35 34,35\"/><polyline class=\"r\" points=\"20,53 20,29\"/><polygon class=\"rh\" points=\"20,29 18.52,32.06 21.48,32.06\"/>", "cossack": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"36,57 22,48 18,71\"/><polyline class=\"k\" points=\"36,57 86,69 92,64\"/><polyline class=\"k\" points=\"36,57 38,31\"/><circle class=\"hd\" cx=\"38\" cy=\"23\" r=\"5\"/><polyline class=\"k\" points=\"38,33 52,35\"/><polyline class=\"r\" points=\"62,41 62,51\"/><polygon class=\"rh\" points=\"62,51 63.48,47.94 60.52,47.94\"/><polyline class=\"r\" points=\"62,51 62,41\"/><polygon class=\"rh\" points=\"62,41 60.52,44.06 63.48,44.06\"/>", "couch": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><line class=\"w\" x1=\"92\" y1=\"71\" x2=\"92\" y2=\"9\"/><polyline class=\"k\" points=\"72,51 78,71 92,43\"/><polyline class=\"k\" points=\"72,51 46,47 46,71\"/><polyline class=\"k\" points=\"72,51 72,25\"/><circle class=\"hd\" cx=\"72\" cy=\"17\" r=\"5\"/><polyline class=\"k\" points=\"72,27 62,35 54,31\"/><polyline class=\"r\" points=\"60,61 68,61\"/><polygon class=\"rh\" points=\"68,61 64.94,59.52 64.94,62.48\"/>", "hang": "<line class=\"br\" x1=\"14\" y1=\"7\" x2=\"86\" y2=\"7\"/><polyline class=\"k\" points=\"38,7 44,19\"/><polyline class=\"k\" points=\"62,7 56,19\"/><polyline class=\"k\" points=\"44,19 56,19\"/><polyline class=\"k\" points=\"50,19 50,41\"/><circle class=\"hd\" cx=\"50\" cy=\"13\" r=\"5\"/><polyline class=\"k\" points=\"50,41 46,55 46,67\"/><polyline class=\"k\" points=\"50,41 54,55 54,67\"/>", "dislocate": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"50,29 50,49\"/><polyline class=\"k\" points=\"42,29 58,29\"/><polyline class=\"k\" points=\"50,49 44,59 44,71\"/><polyline class=\"k\" points=\"50,49 56,59 56,71\"/><circle class=\"hd\" cx=\"50\" cy=\"21\" r=\"5\"/><polyline class=\"k\" points=\"42,29 28,17 16,5\"/><polyline class=\"k\" points=\"58,29 72,17 84,5\"/><polyline class=\"p\" points=\"16,5 50,3 84,5\"/><polyline class=\"a\" points=\"16,5 8,29 14,49\"/><polyline class=\"a\" points=\"84,5 92,29 86,49\"/>", "toracica": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"70,71 68,55 66,41\"/><polyline class=\"k\" points=\"66,41 40,41\"/><polyline class=\"k\" points=\"40,41 24,39\"/><line class=\"br\" x1=\"22\" y1=\"39\" x2=\"22\" y2=\"71\"/><line class=\"br\" x1=\"18\" y1=\"39\" x2=\"30\" y2=\"39\"/><circle class=\"hd\" cx=\"31\" cy=\"48\" r=\"5\"/><polyline class=\"r\" points=\"46,25 46,37\"/><polygon class=\"rh\" points=\"46,37 47.48,33.94 44.52,33.94\"/><text class=\"tx\" x=\"32\" y=\"19\">pecho al suelo</text>", "pancake": "<polyline class=\"k\" points=\"50,63 14,33\"/><polyline class=\"k\" points=\"50,63 86,33\"/><polyline class=\"k\" points=\"50,63 50,27\"/><polyline class=\"k\" points=\"42,27 58,27\"/><circle class=\"hd\" cx=\"50\" cy=\"20\" r=\"5\"/><polyline class=\"k\" points=\"42,27 44,7\"/><polyline class=\"k\" points=\"58,27 56,7\"/><text class=\"tx\" x=\"4\" y=\"71\">vista desde arriba</text>", "nino": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"86,70 52,70\"/><polyline class=\"k\" points=\"52,70 74,51\"/><polyline class=\"k\" points=\"74,51 42,61\"/><circle class=\"hd\" cx=\"34\" cy=\"64\" r=\"5\"/><polyline class=\"k\" points=\"46,60 28,66 10,69\"/><text class=\"tx\" x=\"44\" y=\"35\">respira lento</text>", "equilibrio": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"50,71 50,45\"/><polyline class=\"k\" points=\"50,45 62,45 60,59\"/><polyline class=\"k\" points=\"50,45 50,23\"/><circle class=\"hd\" cx=\"50\" cy=\"15\" r=\"5\"/><polyline class=\"k\" points=\"50,25 30,22\"/><polyline class=\"k\" points=\"50,25 70,22\"/><text class=\"tx\" x=\"60\" y=\"9\">ojos cerrados</text>", "duckwalk": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"62,71 64,55 48,63\"/><polyline class=\"k\" points=\"48,63 42,69 30,70\"/><polyline class=\"k\" points=\"48,63 52,39\"/><circle class=\"hd\" cx=\"53\" cy=\"31\" r=\"5\"/><polyline class=\"k\" points=\"51,42 66,43\"/><polyline class=\"r\" points=\"74,31 92,31\"/><polygon class=\"rh\" points=\"92,31 88.94,29.52 88.94,32.48\"/><text class=\"tx\" x=\"60\" y=\"19\">caderas abajo</text>", "derribo": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"16,70 34,68 46,55\"/><polyline class=\"k\" points=\"46,55 60,53 62,71\"/><polyline class=\"k\" points=\"46,55 66,43\"/><circle class=\"hd\" cx=\"72\" cy=\"38\" r=\"5\"/><polyline class=\"k\" points=\"64,44 80,49 90,57\"/><polyline class=\"f\" points=\"64,44 78,51 86,62\"/><polyline class=\"r\" points=\"56,15 80,15\"/><polygon class=\"rh\" points=\"80,15 76.94,13.52 76.94,16.48\"/><text class=\"tx\" x=\"56\" y=\"11\">entra</text><polyline class=\"r\" points=\"42,15 18,15\"/><polygon class=\"rh\" points=\"18,15 21.06,16.48 21.06,13.52\"/><text class=\"tx\" x=\"18\" y=\"11\">sprawl</text>", "flexion": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"f\" points=\"33,71 33,54\"/><polyline class=\"k\" points=\"28,71 28,53 86,71\"/><circle class=\"hd\" cx=\"20\" cy=\"50\" r=\"5\"/>", "flexion_palmada": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"30,45 88,71\"/><polyline class=\"k\" points=\"30,45 35,57\"/><polyline class=\"f\" points=\"32,46 36,57\"/><polyline class=\"r\" points=\"33.18,59.03 29.89,60.22\"/><polyline class=\"r\" points=\"34.97,60.82 33.78,64.11\"/><polyline class=\"r\" points=\"37.03,60.82 38.22,64.11\"/><polyline class=\"r\" points=\"38.82,59.03 42.11,60.22\"/><circle class=\"hd\" cx=\"22\" cy=\"42\" r=\"5\"/><polyline class=\"r\" points=\"52,45 52,29\"/><polygon class=\"rh\" points=\"52,29 50.52,32.06 53.48,32.06\"/><text class=\"tx\" x=\"40\" y=\"21\">¡palmada!</text>", "flexion_arquera": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"38,57 58,57\"/><polyline class=\"k\" points=\"38,57 26,49 28,71\"/><polyline class=\"k\" points=\"58,57 88,71\"/><circle class=\"hd\" cx=\"42\" cy=\"50\" r=\"5\"/><polyline class=\"r\" points=\"60,35 42,35\"/><polygon class=\"rh\" points=\"42,35 45.06,36.48 45.06,33.52\"/><text class=\"tx\" x=\"56\" y=\"15\">vista frontal</text>", "dominada_anillas": "<line class=\"st\" x1=\"40\" y1=\"0\" x2=\"40\" y2=\"14\"/><circle class=\"rg\" cx=\"40\" cy=\"17\" r=\"3\"/><line class=\"st\" x1=\"60\" y1=\"0\" x2=\"60\" y2=\"14\"/><circle class=\"rg\" cx=\"60\" cy=\"17\" r=\"3\"/><polyline class=\"k\" points=\"40,20 36,28 44,32\"/><polyline class=\"k\" points=\"60,20 64,28 56,32\"/><polyline class=\"k\" points=\"44,32 56,32\"/><polyline class=\"k\" points=\"50,32 50,51\"/><polyline class=\"k\" points=\"50,51 46,62 48,72\"/><polyline class=\"f\" points=\"50,51 53,62 54,72\"/><circle class=\"hd\" cx=\"50\" cy=\"25\" r=\"5\"/><polyline class=\"r\" points=\"80,53 80,31\"/><polygon class=\"rh\" points=\"80,31 78.52,34.06 81.48,34.06\"/>", "fondos_anillas": "<line class=\"st\" x1=\"37\" y1=\"0\" x2=\"37\" y2=\"34\"/><circle class=\"rg\" cx=\"37\" cy=\"37\" r=\"3\"/><line class=\"st\" x1=\"63\" y1=\"0\" x2=\"63\" y2=\"34\"/><circle class=\"rg\" cx=\"63\" cy=\"37\" r=\"3\"/><polyline class=\"k\" points=\"37,40 42,23 58,23 63,40\"/><polyline class=\"k\" points=\"50,23 50,45\"/><polyline class=\"k\" points=\"50,45 45,57 55,65\"/><polyline class=\"f\" points=\"50,45 47,57 57,64\"/><circle class=\"hd\" cx=\"50\" cy=\"15\" r=\"5\"/><polyline class=\"r\" points=\"82,47 82,27\"/><polygon class=\"rh\" points=\"82,27 80.52,30.06 83.48,30.06\"/>", "hang_anillas": "<line class=\"st\" x1=\"40\" y1=\"0\" x2=\"40\" y2=\"10\"/><circle class=\"rg\" cx=\"40\" cy=\"13\" r=\"3\"/><line class=\"st\" x1=\"60\" y1=\"0\" x2=\"60\" y2=\"10\"/><circle class=\"rg\" cx=\"60\" cy=\"13\" r=\"3\"/><polyline class=\"k\" points=\"40,16 44,27\"/><polyline class=\"k\" points=\"60,16 56,27\"/><polyline class=\"k\" points=\"44,27 56,27\"/><polyline class=\"k\" points=\"50,27 50,49\"/><circle class=\"hd\" cx=\"50\" cy=\"20\" r=\"5\"/><polyline class=\"k\" points=\"50,49 46,61 46,72\"/><polyline class=\"k\" points=\"50,49 54,61 54,72\"/><polyline class=\"r\" points=\"64.36,15.05 64.04,13.73 64.03,12.37 64.33,11.05 64.91,9.82 65.76,8.76 66.82,7.91 68.05,7.33 69.37,7.03 70.73,7.04 72.05,7.36 73.27,7.97 74.32,8.83 75.14,9.91 75.71,11.15 75.98,12.48 75.94,13.84 75.6,15.15 74.97,16.36 74.09,17.39 73.0,18.2\"/><polygon class=\"rh\" points=\"73.0,18.2 76.25,17.19 74.23,15.03\"/><text class=\"tx\" x=\"64\" y=\"29\">palmas fuera</text>", "kb_lanzamiento": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"f\" points=\"42,71 44,57 46,45\"/><polyline class=\"k\" points=\"48,71 48,57 46,45\"/><polyline class=\"k\" points=\"46,45 50,25\"/><circle class=\"hd\" cx=\"52\" cy=\"17\" r=\"5\"/><polyline class=\"k\" points=\"50,27 62,21 70,15\"/><polyline class=\"f\" points=\"50,27 61,23 69,17\"/><polyline class=\"p\" points=\"80,12.6 80,9.4 84,9.4 84,12.6\"/><circle class=\"pf\" cx=\"82\" cy=\"15\" r=\"3.3\"/><polyline class=\"r\" points=\"68,29 92,25\"/><polygon class=\"rh\" points=\"92,25 88.74,24.04 89.22,26.96\"/><text class=\"tx\" x=\"54\" y=\"63\">suéltala sobre césped</text>", "golpe_goma": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><line class=\"w\" x1=\"8\" y1=\"71\" x2=\"8\" y2=\"9\"/><polyline class=\"k\" points=\"30,71 38,57 44,45\"/><polyline class=\"k\" points=\"60,71 56,57 48,45\"/><polyline class=\"k\" points=\"46,45 50,25\"/><circle class=\"hd\" cx=\"52\" cy=\"17\" r=\"5\"/><polyline class=\"f\" points=\"49,26 54,31 55,20\"/><polyline class=\"p\" points=\"8,27 48,26\"/><polyline class=\"k\" points=\"49,26 64,24 80,24\"/><polyline class=\"r\" points=\"66,13 88,13\"/><polygon class=\"rh\" points=\"88,13 84.94,11.52 84.94,14.48\"/>", "vup": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"32,41 50,69 76,37\"/><circle class=\"hd\" cx=\"28\" cy=\"35\" r=\"5\"/><polyline class=\"k\" points=\"34,44 62,37\"/><polyline class=\"r\" points=\"14,45 24,31\"/><polygon class=\"rh\" points=\"24,31 21.02,32.63 23.42,34.35\"/><polyline class=\"r\" points=\"86,51 82,33\"/><polygon class=\"rh\" points=\"82,33 81.22,36.31 84.11,35.67\"/>", "russian_twist": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"40,45 50,69\"/><polyline class=\"k\" points=\"50,69 64,53 80,59\"/><circle class=\"hd\" cx=\"37\" cy=\"37\" r=\"5\"/><polyline class=\"k\" points=\"42,48 54,49\"/><polyline class=\"p\" points=\"56,50.6 56,47.4 60,47.4 60,50.6\"/><circle class=\"pf\" cx=\"58\" cy=\"53\" r=\"3.3\"/><polyline class=\"r\" points=\"24.55,38.86 25.22,36.88 26.14,35.0 27.31,33.26 28.69,31.69 30.26,30.31 32.0,29.14 33.88,28.22 35.86,27.55 37.91,27.14 40.0,27.0 42.09,27.14 44.14,27.55 46.12,28.22 48.0,29.14 49.74,30.31 51.31,31.69 52.69,33.26 53.86,35.0 54.78,36.88 55.45,38.86\"/><polygon class=\"rh\" points=\"55.45,38.86 55.65,35.46 52.92,36.6\"/>", "mountain": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"f\" points=\"31,71 32,50\"/><polyline class=\"k\" points=\"26,71 28,49 56,57 86,71\"/><polyline class=\"k\" points=\"56,57 40,61 46,69\"/><circle class=\"hd\" cx=\"20\" cy=\"45\" r=\"5\"/><polyline class=\"r\" points=\"52,35 38,35\"/><polygon class=\"rh\" points=\"38,35 41.06,36.48 41.06,33.52\"/><polyline class=\"r\" points=\"52,35 66,35\"/><polygon class=\"rh\" points=\"66,35 62.94,33.52 62.94,36.48\"/>", "estir_pecho": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><line class=\"w\" x1=\"22\" y1=\"71\" x2=\"22\" y2=\"9\"/><polyline class=\"f\" points=\"55,71 50,45\"/><polyline class=\"k\" points=\"46,71 50,45\"/><polyline class=\"k\" points=\"50,45 50,23\"/><circle class=\"hd\" cx=\"52\" cy=\"15\" r=\"5\"/><polyline class=\"k\" points=\"49,25 36,21 23,19\"/><polyline class=\"r\" points=\"58.0,21.14 58.95,21.74 59.85,22.39 60.71,23.11 61.51,23.89 62.26,24.72 62.94,25.6 63.57,26.52 64.13,27.49 64.62,28.49 65.04,29.53 65.38,30.59 65.65,31.67 65.84,32.77 65.96,33.88 66.0,35.0 65.96,36.12 65.84,37.23 65.65,38.33 65.38,39.41 65.04,40.47\"/><polygon class=\"rh\" points=\"65.04,40.47 67.3,37.94 64.46,37.12\"/>", "remo_goma": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><line class=\"w\" x1=\"90\" y1=\"71\" x2=\"90\" y2=\"9\"/><polyline class=\"f\" points=\"54,71 48,45\"/><polyline class=\"k\" points=\"42,71 48,45\"/><polyline class=\"k\" points=\"48,45 46,23\"/><circle class=\"hd\" cx=\"47\" cy=\"15\" r=\"5\"/><polyline class=\"k\" points=\"47,25 36,29 55,27\"/><polyline class=\"p\" points=\"55,27 90,27\"/><polyline class=\"r\" points=\"78,17 62,17\"/><polygon class=\"rh\" points=\"62,17 65.06,18.48 65.06,15.52\"/>", "remo_invertido": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"w\" points=\"30,71 30,35\"/><line class=\"br\" x1=\"30\" y1=\"35\" x2=\"46\" y2=\"35\"/><polyline class=\"k\" points=\"88,71 44,43\"/><circle class=\"hd\" cx=\"37\" cy=\"40\" r=\"5\"/><polyline class=\"k\" points=\"44,43 52,50 42,35\"/><polyline class=\"f\" points=\"46,44 55,51 44,35\"/><polyline class=\"r\" points=\"70,45 70,31\"/><polygon class=\"rh\" points=\"70,31 68.52,34.06 71.48,34.06\"/>", "colgado_toallas": "<line class=\"br\" x1=\"14\" y1=\"5\" x2=\"86\" y2=\"5\"/><polyline class=\"tw\" points=\"40,5 42,13 40,21\"/><polyline class=\"tw\" points=\"60,5 58,13 60,21\"/><polyline class=\"k\" points=\"40,21 44,31\"/><polyline class=\"k\" points=\"60,21 56,31\"/><polyline class=\"k\" points=\"44,31 56,31\"/><polyline class=\"k\" points=\"50,31 50,53\"/><circle class=\"hd\" cx=\"50\" cy=\"24\" r=\"5\"/><polyline class=\"k\" points=\"50,53 47,64 47,74\"/><polyline class=\"f\" points=\"50,53 53,64 53,74\"/>", "handgrip": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"f\" points=\"44,71 40,45\"/><polyline class=\"k\" points=\"36,71 40,45\"/><polyline class=\"k\" points=\"40,45 40,23\"/><circle class=\"hd\" cx=\"40\" cy=\"15\" r=\"5\"/><polyline class=\"f\" points=\"40,25 45,37 45,45\"/><polyline class=\"k\" points=\"40,25 52,31 64,27\"/><polyline class=\"p\" points=\"62,35 70,17 78,33\"/><polyline class=\"r\" points=\"88,29 80,27\"/><polygon class=\"rh\" points=\"80,27 82.61,29.18 83.33,26.31\"/><polyline class=\"r\" points=\"50,11 60,21\"/><polygon class=\"rh\" points=\"60,21 58.88,17.79 56.79,19.88\"/><text class=\"tx\" x=\"58\" y=\"63\">aprieta a tope</text>", "plancha": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"16,71 30,71 30,57 86,71\"/><circle class=\"hd\" cx=\"22\" cy=\"53\" r=\"5\"/><text class=\"tx\" x=\"40\" y=\"35\">respira, no aguantes el aire</text>", "hollow": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"12,51 36,60 56,70 90,57\"/><circle class=\"hd\" cx=\"31\" cy=\"53\" r=\"5\"/><text class=\"tx\" x=\"34\" y=\"31\">zona lumbar pegada al suelo</text>", "lsit": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"48,62 48,41\"/><polyline class=\"k\" points=\"48,62 88,62\"/><polyline class=\"k\" points=\"48,43 43,71\"/><polyline class=\"f\" points=\"48,43 53,71\"/><circle class=\"hd\" cx=\"48\" cy=\"33\" r=\"5\"/>", "dragon_flag": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><rect class=\"bn\" x=\"4\" y=\"61\" width=\"40\" height=\"10\" rx=\"1\"/><polyline class=\"k\" points=\"24,60 80,23\"/><circle class=\"hd\" cx=\"18\" cy=\"56\" r=\"5\"/><polyline class=\"k\" points=\"22,58 12,51 8,60\"/><polyline class=\"r\" points=\"61.21,32.96 61.68,33.62 62.14,34.28 62.58,34.95 63.01,35.62 63.43,36.31 63.84,37.0 64.23,37.7 64.62,38.4 64.99,39.12 65.34,39.83 65.69,40.56 66.02,41.29 66.34,42.03 66.65,42.77 66.94,43.52 67.23,44.27 67.49,45.02 67.75,45.79 67.99,46.55 68.22,47.32\"/><polygon class=\"rh\" points=\"68.22,47.32 68.74,43.96 65.91,44.83\"/>", "rueda": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"90,71 68,70 58,55 34,51 16,65\"/><circle class=\"rg\" cx=\"14\" cy=\"67\" r=\"4\"/><circle class=\"hd\" cx=\"28\" cy=\"47\" r=\"5\"/><polyline class=\"r\" points=\"44,31 24,31\"/><polygon class=\"rh\" points=\"24,31 27.06,32.48 27.06,29.52\"/><polyline class=\"r\" points=\"44,31 64,31\"/><polygon class=\"rh\" points=\"64,31 60.94,29.52 60.94,32.48\"/>", "comba": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"46,66 48,43\"/><polyline class=\"k\" points=\"54,66 52,43\"/><polyline class=\"k\" points=\"50,43 50,23\"/><circle class=\"hd\" cx=\"50\" cy=\"15\" r=\"5\"/><polyline class=\"k\" points=\"50,25 42,33 38,41\"/><polyline class=\"k\" points=\"50,25 58,33 62,41\"/><polyline class=\"p\" points=\"38,41 30,23 38,5 62,5 70,23 62,41\"/>", "sombra": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"30,71 38,57 44,45\"/><polyline class=\"k\" points=\"60,71 56,57 48,45\"/><polyline class=\"k\" points=\"46,45 50,25\"/><circle class=\"hd\" cx=\"52\" cy=\"17\" r=\"5\"/><polyline class=\"f\" points=\"49,26 55,33 56,21\"/><polyline class=\"k\" points=\"49,26 58,31 60,20\"/><polyline class=\"r\" points=\"70,21 88,21\"/><polygon class=\"rh\" points=\"88,21 84.94,19.52 84.94,22.48\"/><polyline class=\"r\" points=\"70,31 84,31\"/><polygon class=\"rh\" points=\"84,31 80.94,29.52 80.94,32.48\"/><text class=\"tx\" x=\"4\" y=\"7\">sombra suave</text>", "saco_golpe": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><line class=\"st\" x1=\"84\" y1=\"0\" x2=\"84\" y2=\"9\"/><rect class=\"bag\" x=\"78\" y=\"9\" width=\"12\" height=\"48\" rx=\"4\"/><polyline class=\"k\" points=\"24,71 32,57 38,45\"/><polyline class=\"k\" points=\"54,71 50,57 42,45\"/><polyline class=\"k\" points=\"40,45 44,25\"/><circle class=\"hd\" cx=\"46\" cy=\"17\" r=\"5\"/><polyline class=\"f\" points=\"43,26 48,32 50,21\"/><polyline class=\"k\" points=\"43,26 60,24 77,24\"/>", "patada_saco": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><line class=\"st\" x1=\"84\" y1=\"0\" x2=\"84\" y2=\"9\"/><rect class=\"bag\" x=\"78\" y=\"9\" width=\"12\" height=\"48\" rx=\"4\"/><polyline class=\"k\" points=\"38,71 40,57 44,43\"/><polyline class=\"k\" points=\"44,43 58,31 77,31\"/><polyline class=\"k\" points=\"44,43 34,25\"/><circle class=\"hd\" cx=\"31\" cy=\"18\" r=\"5\"/><polyline class=\"k\" points=\"36,27 26,37\"/><polyline class=\"f\" points=\"36,27 42,23 40,17\"/>", "patada_goma": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><line class=\"w\" x1=\"8\" y1=\"71\" x2=\"8\" y2=\"9\"/><polyline class=\"p\" points=\"8,67 78,32\"/><polyline class=\"k\" points=\"38,71 40,57 44,43\"/><polyline class=\"k\" points=\"44,43 58,31 80,31\"/><polyline class=\"k\" points=\"44,43 34,25\"/><circle class=\"hd\" cx=\"31\" cy=\"18\" r=\"5\"/><polyline class=\"k\" points=\"36,27 26,37\"/><polyline class=\"f\" points=\"36,27 42,23 40,17\"/><text class=\"tx\" x=\"56\" y=\"11\">goma al tobillo</text>", "zancada_salto": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"50,45 64,51 64,65\"/><polyline class=\"k\" points=\"50,45 42,59 28,62\"/><polyline class=\"k\" points=\"50,45 50,23\"/><rect class=\"vs\" x=\"45.5\" y=\"25.0\" width=\"9\" height=\"16\" rx=\"1.5\"/><circle class=\"hd\" cx=\"50\" cy=\"15\" r=\"5\"/><polyline class=\"k\" points=\"50,25 60,33\"/><polyline class=\"f\" points=\"50,25 40,33\"/><polyline class=\"r\" points=\"82,61 82,35\"/><polygon class=\"rh\" points=\"82,35 80.52,38.06 83.48,38.06\"/>", "sentadilla_salto": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"46,63 48,43\"/><polyline class=\"k\" points=\"54,63 52,43\"/><polyline class=\"k\" points=\"50,43 50,23\"/><circle class=\"hd\" cx=\"50\" cy=\"15\" r=\"5\"/><polyline class=\"k\" points=\"50,25 40,9\"/><polyline class=\"k\" points=\"50,25 60,9\"/><polyline class=\"r\" points=\"78,65 78,35\"/><polygon class=\"rh\" points=\"78,35 76.52,38.06 79.48,38.06\"/>", "cambio_guardia": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"30,71 38,57 44,45\"/><polyline class=\"k\" points=\"60,71 56,57 48,45\"/><polyline class=\"k\" points=\"46,45 50,25\"/><circle class=\"hd\" cx=\"52\" cy=\"17\" r=\"5\"/><polyline class=\"f\" points=\"49,26 55,33 56,21\"/><polyline class=\"k\" points=\"49,26 58,31 60,20\"/><polyline class=\"r\" points=\"50,7 30,7\"/><polygon class=\"rh\" points=\"30,7 33.06,8.48 33.06,5.52\"/><polyline class=\"r\" points=\"50,7 70,7\"/><polygon class=\"rh\" points=\"70,7 66.94,5.52 66.94,8.48\"/><text class=\"tx\" x=\"2\" y=\"13\">cambia</text>", "desplazamiento": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"30,71 38,57 44,45\"/><polyline class=\"k\" points=\"60,71 56,57 48,45\"/><polyline class=\"k\" points=\"46,45 50,25\"/><circle class=\"hd\" cx=\"52\" cy=\"17\" r=\"5\"/><polyline class=\"f\" points=\"49,26 55,33 56,21\"/><polyline class=\"k\" points=\"49,26 58,31 60,20\"/><polyline class=\"r\" points=\"46,5 22,5\"/><polygon class=\"rh\" points=\"22,5 25.06,6.48 25.06,3.52\"/><polyline class=\"r\" points=\"54,5 78,5\"/><polygon class=\"rh\" points=\"78,5 74.94,3.52 74.94,6.48\"/><text class=\"tx\" x=\"66\" y=\"35\">sin cruzar</text><text class=\"tx\" x=\"66\" y=\"41\">los pies</text>", "patada": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"38,71 40,57 44,43\"/><polyline class=\"k\" points=\"44,43 58,29 80,25\"/><polyline class=\"k\" points=\"44,43 34,25\"/><circle class=\"hd\" cx=\"31\" cy=\"18\" r=\"5\"/><polyline class=\"k\" points=\"36,27 26,37\"/><polyline class=\"f\" points=\"36,27 42,23 40,17\"/><polyline class=\"r\" points=\"71.92,61.71 72.9,60.47 73.81,59.16 74.63,57.8 75.37,56.4 76.02,54.95 76.58,53.46 77.05,51.95 77.43,50.41 77.71,48.84 77.9,47.27 77.99,45.68 77.98,44.09 77.88,42.51 77.68,40.93 77.38,39.37 76.99,37.83 76.51,36.32 75.93,34.84 75.27,33.4 74.52,32.0\"/><polygon class=\"rh\" points=\"74.52,32.0 74.56,35.4 77.21,34.08\"/>", "swing_kb": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"f\" points=\"50,71 49,57 48,43\"/><polyline class=\"k\" points=\"44,71 46,57 46,43\"/><polyline class=\"k\" points=\"46,43 46,21\"/><circle class=\"hd\" cx=\"46\" cy=\"13\" r=\"5\"/><polyline class=\"k\" points=\"46,23 70,25\"/><polyline class=\"p\" points=\"71,27.6 71,24.4 75,24.4 75,27.6\"/><circle class=\"pf\" cx=\"73\" cy=\"30\" r=\"3.3\"/><polyline class=\"r\" points=\"53.76,63.98 55.35,63.51 56.9,62.95 58.42,62.31 59.9,61.59 61.34,60.78 62.73,59.9 64.08,58.94 65.36,57.91 66.59,56.82 67.76,55.65 68.86,54.42 69.9,53.14 70.86,51.8 71.74,50.41 72.55,48.97 73.28,47.49 73.92,45.97 74.48,44.42 74.96,42.84 75.34,41.24\"/><polygon class=\"rh\" points=\"75.34,41.24 73.12,43.81 75.97,44.58\"/>", "bulgara": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><rect class=\"bn\" x=\"72\" y=\"59\" width=\"22\" height=\"12\" rx=\"1\"/><polyline class=\"k\" points=\"50,49 58,66 76,59\"/><polyline class=\"k\" points=\"50,49 34,49 34,71\"/><polyline class=\"k\" points=\"50,49 48,27\"/><circle class=\"hd\" cx=\"47\" cy=\"19\" r=\"5\"/><polyline class=\"k\" points=\"48,29 42,43\"/><polyline class=\"r\" points=\"18,61 18,35\"/><polygon class=\"rh\" points=\"18,35 16.52,38.06 19.48,38.06\"/>", "saltos_laterales": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"44,71 46,57 50,43\"/><polyline class=\"f\" points=\"50,43 58,55 36,65\"/><polyline class=\"k\" points=\"50,43 56,23\"/><circle class=\"hd\" cx=\"58\" cy=\"15\" r=\"5\"/><polyline class=\"k\" points=\"55,25 70,31\"/><polyline class=\"f\" points=\"55,25 42,33\"/><polyline class=\"r\" points=\"46,5 24,5\"/><polygon class=\"rh\" points=\"24,5 27.06,6.48 27.06,3.52\"/><polyline class=\"r\" points=\"66,5 88,5\"/><polygon class=\"rh\" points=\"88,5 84.94,3.52 84.94,6.48\"/>", "pistol": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"50,71 62,55 46,59\"/><polyline class=\"k\" points=\"46,59 92,62\"/><polyline class=\"k\" points=\"46,59 56,35\"/><circle class=\"hd\" cx=\"58\" cy=\"27\" r=\"5\"/><polyline class=\"k\" points=\"55,37 80,35\"/>", "sprint": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"46,45 38,59 26,67\"/><polyline class=\"k\" points=\"46,45 60,43 58,57\"/><polyline class=\"k\" points=\"46,45 56,25\"/><circle class=\"hd\" cx=\"59\" cy=\"17\" r=\"5\"/><polyline class=\"k\" points=\"55,27 64,35 72,29\"/><polyline class=\"f\" points=\"55,27 46,33 42,41\"/><polyline class=\"a\" points=\"4,31 22,31\"/><polyline class=\"a\" points=\"8,41 26,41\"/><polyline class=\"a\" points=\"4,51 18,51\"/>", "trote": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"48,45 42,57 34,65\"/><polyline class=\"k\" points=\"48,45 56,53 54,67\"/><polyline class=\"k\" points=\"48,45 50,23\"/><circle class=\"hd\" cx=\"51\" cy=\"15\" r=\"5\"/><polyline class=\"k\" points=\"50,25 56,33 62,29\"/><polyline class=\"f\" points=\"50,25 44,33 42,39\"/><text class=\"tx\" x=\"66\" y=\"45\">ritmo cómodo</text>", "caminar": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"48,45 42,71\"/><polyline class=\"k\" points=\"48,45 56,71\"/><polyline class=\"k\" points=\"48,45 48,23\"/><circle class=\"hd\" cx=\"48\" cy=\"15\" r=\"5\"/><polyline class=\"k\" points=\"48,25 54,37\"/><polyline class=\"f\" points=\"48,25 42,37\"/><polyline class=\"r\" points=\"66,45 86,45\"/><polygon class=\"rh\" points=\"86,45 82.94,43.52 82.94,46.48\"/>", "escaleras": "<polyline class=\"w\" points=\"2,71 18,71 18,62 32,62 32,53 46,53 46,44 60,44 60,35 98,35\"/><polyline class=\"k\" points=\"46,33 44,43 40,52\"/><polyline class=\"k\" points=\"46,33 57,29 54,43\"/><polyline class=\"k\" points=\"46,33 52,15\"/><circle class=\"hd\" cx=\"54\" cy=\"8\" r=\"5\"/><polyline class=\"k\" points=\"51,17 58,23 62,17\"/><polyline class=\"f\" points=\"51,17 44,23 40,29\"/><polyline class=\"r\" points=\"6,57 24,37\"/><polygon class=\"rh\" points=\"24,37 20.85,38.29 23.05,40.26\"/><text class=\"tx\" x=\"66\" y=\"51\">baja andando</text>", "movilidad_dinamica": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"48,71 48,45\"/><polyline class=\"a\" points=\"48,45 34,65\"/><polyline class=\"k\" points=\"48,45 72,35\"/><polyline class=\"k\" points=\"48,45 48,23\"/><circle class=\"hd\" cx=\"48\" cy=\"15\" r=\"5\"/><polyline class=\"k\" points=\"48,25 30,29\"/><polyline class=\"r\" points=\"37.0,64.05 39.37,65.24 41.86,66.13 44.44,66.71 47.08,66.98 49.73,66.93 52.35,66.57 54.91,65.89 57.37,64.91 59.69,63.64 61.85,62.1 63.8,60.31 65.52,58.3 66.99,56.1 68.19,53.74 69.09,51.25 69.69,48.67 69.98,46.04 69.94,43.39 69.59,40.76 68.92,38.2\"/><polygon class=\"rh\" points=\"68.92,38.2 68.06,41.49 70.96,40.92\"/>", "estir_cuad": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"50,71 50,45\"/><polyline class=\"k\" points=\"50,45 52,59 40,49\"/><polyline class=\"k\" points=\"50,45 50,23\"/><circle class=\"hd\" cx=\"50\" cy=\"15\" r=\"5\"/><polyline class=\"k\" points=\"50,25 42,37 40,48\"/><polyline class=\"k\" points=\"50,25 64,20\"/>", "meditacion": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"34,69 50,63 66,69\"/><polyline class=\"k\" points=\"34,69 58,67\"/><polyline class=\"k\" points=\"66,69 42,67\"/><polyline class=\"k\" points=\"50,63 50,39\"/><circle class=\"hd\" cx=\"50\" cy=\"31\" r=\"5\"/><polyline class=\"k\" points=\"50,41 40,51 36,65\"/><polyline class=\"k\" points=\"50,41 60,51 64,65\"/><text class=\"tx\" x=\"30\" y=\"13\">inspira 4 · retén 4 · suelta 6</text>", "puente_frontal": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"30,61 54,45 70,57 84,71\"/><circle class=\"hd\" cx=\"24\" cy=\"65\" r=\"5\"/><polyline class=\"f\" points=\"32,59 38,71\"/><text class=\"tx\" x=\"30\" y=\"21\">apoyo en la frente</text>", "puente_trasero": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"30,59 42,47 58,45 74,51 76,71\"/><circle class=\"hd\" cx=\"25\" cy=\"65\" r=\"5\"/><polyline class=\"f\" points=\"36,51 46,45\"/><text class=\"tx\" x=\"18\" y=\"21\">apoyo en lo alto de la cabeza</text>", "puente_lateral": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"28,61 58,51 84,71\"/><polyline class=\"f\" points=\"58,51 94,71\"/><circle class=\"hd\" cx=\"22\" cy=\"65\" r=\"5\"/><polyline class=\"k\" points=\"36,58 44,47 52,53\"/><text class=\"tx\" x=\"18\" y=\"21\">apoyo en el lateral de la cabeza</text>", "puente_balanceo": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"k\" points=\"30,59 42,47 58,45 74,51 76,71\"/><circle class=\"hd\" cx=\"25\" cy=\"65\" r=\"5\"/><polyline class=\"f\" points=\"36,51 46,45\"/><polyline class=\"r\" points=\"13.18,62.92 13.56,61.39 14.12,59.93 14.88,58.55 15.81,57.29 16.89,56.15 18.12,55.17 19.46,54.36 20.9,53.72 22.4,53.28 23.95,53.05 25.52,53.01 27.08,53.18 28.61,53.56 30.07,54.12 31.45,54.88 32.71,55.81 33.85,56.89 34.83,58.12 35.64,59.46 36.28,60.9\"/><polygon class=\"rh\" points=\"36.28,60.9 36.17,57.5 33.55,58.86\"/><text class=\"tx\" x=\"30\" y=\"21\">rueda muy lento</text>", "cuello_manual": "<line class=\"fl\" x1=\"3\" y1=\"71\" x2=\"97\" y2=\"71\"/><polyline class=\"f\" points=\"54,71 50,45\"/><polyline class=\"k\" points=\"46,71 50,45\"/><polyline class=\"k\" points=\"50,45 50,23\"/><circle class=\"hd\" cx=\"50\" cy=\"15\" r=\"5\"/><polyline class=\"f\" points=\"50,25 45,37 45,45\"/><polyline class=\"k\" points=\"50,25 62,23 56,15\"/><polyline class=\"r\" points=\"70,15 60,15\"/><polygon class=\"rh\" points=\"60,15 63.06,16.48 63.06,13.52\"/><polyline class=\"r\" points=\"34,15 44,15\"/><polygon class=\"rh\" points=\"44,15 40.94,13.52 40.94,16.48\"/><text class=\"tx\" x=\"4\" y=\"5\">empuja sin mover la cabeza</text>"};
+
+const CHEERS = [
+  {jp:"頑張れ", ro:"Ganbare!", es:"¡Dale con todo!"},
+  {jp:"よくやった", ro:"Yoku yatta!", es:"¡Bien hecho!"},
+  {jp:"七転び八起き", ro:"Nana korobi ya oki", es:"Cae siete veces, levántate ocho."},
+  {jp:"押忍", ro:"Osu!", es:"Aguanta, respeta y sigue."},
+  {jp:"根性", ro:"Konjō!", es:"¡Agallas!"},
+  {jp:"気合だ", ro:"Kiai da!", es:"¡Espíritu de lucha!"},
+  {jp:"負けるな", ro:"Makeru na!", es:"¡No te dejes ganar!"},
+  {jp:"限界突破", ro:"Genkai toppa", es:"Rompe tus límites."},
+  {jp:"継続は力なり", ro:"Keizoku wa chikara nari", es:"La constancia es poder."},
+  {jp:"一生懸命", ro:"Isshōkenmei", es:"Con todo lo que tienes."},
+  {jp:"不撓不屈", ro:"Futō fukutsu", es:"Inquebrantable."},
+  {jp:"その調子", ro:"Sono chōshi!", es:"¡Así, sigue así!"},
+  {jp:"もう一歩", ro:"Mō ippo!", es:"¡Un paso más!"},
+  {jp:"できる", ro:"Dekiru!", es:"¡Puedes con esto!"}
+];
+const SPECIAL = [
+  {big:"They don't know me, son!", who:"David Goggins"},
+  {big:"¿Entonces ellos ganan?", who:"Tú, cuando cuesta"}
+];
+
+/* ex: n name, img pose, sets, reps (text), work (s, timed), rest (s), sides, d description */
+const DAYS = [
+ {k:"月", s:"Lun", jp:"月曜日", name:"Lunes", title:"Tren superior explosivo", dur:"45-50 min",
+  what:"Potencia de empuje y tirón con anillas, más core explosivo.",
+  blocks:[
+   {name:"Calentamiento", mins:"8 min", ex:[
+     {n:"CARs de hombro, codo y muñeca", img:"car_hombro", sets:1, reps:"5 círculos por dirección", rest:0, d:"Círculos lentos al máximo rango y con tensión en toda la articulación. El resto del cuerpo, quieto."},
+     {n:"Flexiones de activación", img:"flexion", sets:1, reps:"10", rest:0, d:"Flexiones normales, ritmo controlado. Solo para despertar pecho, hombro y tríceps."},
+     {n:"Remo con goma", img:"remo_goma", sets:1, reps:"10", rest:0, d:"Goma anclada delante. Tira llevando los codos atrás y juntando escápulas."}
+   ]},
+   {name:"Bloque explosivo", mins:"25 min", ex:[
+     {n:"Flexiones con palmada en anillas", img:"flexion_palmada", sets:5, reps:"5", rest:90, d:"Manos en las anillas a ras de suelo. Baja controlado, empuja con todo, suelta y da la palmada. Si las anillas te desestabilizan, haz esa serie en el suelo."},
+     {n:"Dominadas explosivas en anillas", img:"dominada_anillas", sets:5, reps:"4-5", rest:90, d:"Sube lo más rápido que puedas buscando llevar el pecho a las anillas. Baja controlado."},
+     {n:"Fondos explosivos en anillas", img:"fondos_anillas", sets:4, reps:"5", rest:90, d:"Baja controlado y empuja explosivo. Arriba, gira las anillas hacia fuera. Si pierdes la forma, pásate a los fondos fijos."},
+     {n:"Lanzamiento de kettlebell a pecho", img:"kb_lanzamiento", sets:4, reps:"6", rest:60, d:"Desde abajo, explota con cadera y brazos lanzando la kettlebell adelante y arriba. Suéltala sobre césped o arena: no intentes atrapar 20 kg en el aire."},
+     {n:"Golpeo con goma", img:"golpe_goma", sets:4, reps:"10 por brazo", rest:45, d:"Goma anclada detrás a la altura del hombro. Lanza tus combinaciones de puños contra la resistencia y vuelve rápido a guardia."}
+   ]},
+   {name:"Core explosivo", mins:"10 min", ex:[
+     {n:"V-ups", img:"vup", sets:4, reps:"10", rest:45, d:"Tumbado, sube piernas y tronco a la vez hasta tocar espinillas. Baja controlado sin apoyar del todo."},
+     {n:"Russian twist rápido", img:"russian_twist", sets:4, reps:"16 (8 por lado)", rest:45, d:"Sentado con pies en el aire, gira el tronco de lado a lado rápido. Con kettlebell ligera o sin peso."},
+     {n:"Mountain climbers", img:"mountain", sets:4, reps:"20 s a tope", work:20, rest:40, d:"En plancha alta, lleva las rodillas al pecho alternando lo más rápido posible. Caderas bajas."}
+   ]},
+   {name:"Cierre", mins:"5 min", ex:[
+     {n:"Colgado en anillas con rotación externa", img:"hang_anillas", sets:2, reps:"30 s", work:30, rest:30, d:"Cuelga de las anillas y gira las palmas hacia fuera. Descomprime hombros y fortalece el manguito rotador."},
+     {n:"Estiramiento de pecho y hombro", img:"estir_pecho", sets:1, reps:"30 s por lado", work:30, sides:true, rest:0, d:"Mano en la pared a la altura del hombro y gira el pecho hacia el lado contrario, suave."}
+   ]}
+  ],
+  tips:["Velocidad antes que cantidad: si una serie sale lenta, córtala ahí.","Descansa completo entre series explosivas. La potencia se entrena fresco.","Progresión: palmada en el pecho o detrás de la espalda, y chaleco de 10 kg en dominadas cuando domines el gesto."]
+ },
+ {k:"火", s:"Mar", jp:"火曜日", name:"Martes", title:"Taekwondo", dur:"20 min + la clase",
+  what:"Clase en el gimnasio. Aquí solo preparas el cuerpo antes y lo recuperas después.",
+  blocks:[
+   {name:"Antes de la clase", mins:"10 min", note:"En casa o al llegar al gimnasio, sobre todo si la clase calienta poco la cadera.", ex:[
+     {n:"CARs de cadera, rodilla y tobillo", img:"cadera_car", sets:1, reps:"5 por dirección", rest:0, d:"Círculos lentos al máximo rango. La cadera es lo que más vas a usar hoy."},
+     {n:"Balanceos de pierna", img:"movilidad_dinamica", sets:1, reps:"10 por pierna y dirección", rest:0, d:"Adelante-atrás y laterales, subiendo la altura poco a poco. Prepara la cadera para patear alto sin tirones."},
+     {n:"Cossack squat", img:"cossack", sets:1, reps:"6 por lado", rest:0, d:"Lento, abriendo aductores para las patadas laterales y circulares."},
+     {n:"Comba o skipping", img:"comba", sets:1, reps:"2 min", work:120, rest:0, d:"Activa tobillos y pulsaciones antes de entrar."}
+   ]},
+   {name:"Clase de taekwondo", mins:"lo que dure", ex:[
+     {n:"Clase", img:"patada", sets:1, reps:"a tope", rest:0, d:"Escucha, aprende y suda. Todo lo de fuera del gimnasio está pensado para que llegues aquí fresco."}
+   ]},
+   {name:"Después de la clase", mins:"10 min", ex:[
+     {n:"Couch stretch", img:"couch", sets:1, reps:"1 min por lado", work:60, sides:true, rest:0, d:"Espinilla en la pared y glúteo apretado. Descarga el flexor de cadera después de tantas patadas."},
+     {n:"90/90 de cadera", img:"90_90", sets:1, reps:"5 transiciones por lado", rest:0, d:"Despacio y sin manos. Recupera la rotación de cadera."},
+     {n:"Pancake suave", img:"pancake", sets:1, reps:"1 min", work:60, rest:0, d:"Piernas abiertas e inclínate sin forzar. Hoy no buscamos ganar rango, solo soltar."},
+     {n:"Respiración nasal", img:"meditacion", sets:1, reps:"2 min", work:120, rest:0, d:"Inspira 4 s, retén 4 s, suelta 6 s. Baja revoluciones."}
+   ]}
+  ],
+  tips:["Si sales reventado, el estiramiento de después es lo único que no te saltas.","Come algo con proteína y bebe agua al salir.","Apunta lo que te corrijan los instructores: lo repasamos en sombra el viernes."]
+ },
+ {k:"水", s:"Mié", jp:"水曜日", name:"Miércoles", title:"Movilidad", dur:"50-55 min",
+  what:"Equilibrio, CARs, animal movement y derribos.",
+  blocks:[
+   {name:"Equilibrio", mins:"5 min", ex:[
+     {n:"Apoyo a una pierna, ojos cerrados", img:"equilibrio", sets:3, reps:"30 s por pierna", work:30, sides:true, rest:20, d:"De pie sobre una pierna con los ojos cerrados. Si te caes, apoya y vuelve. Entrena el tobillo para que no te desequilibren."}
+   ]},
+   {name:"Activación articular (CARs)", mins:"8 min", ex:[
+     {n:"Cuello y hombros", img:"car_hombro", sets:1, reps:"5 círculos por dirección", rest:0, d:"Círculos lentos al máximo rango y con toda la tensión. Sin compensar con el resto del cuerpo."},
+     {n:"Muñecas", img:"muneca", sets:1, reps:"5 círculos por dirección", rest:0, d:"Puño cerrado, dibuja el círculo más grande que puedas solo con la muñeca. En MMA te apoyarás mucho en ellas."},
+     {n:"Gato-vaca", img:"cat_cow", sets:1, reps:"8-10 lentas", rest:0, d:"A cuatro apoyos. Redondea empujando el suelo y luego hunde el pecho mirando arriba. Vértebra a vértebra."},
+     {n:"Cadera: fire hydrant", img:"cadera_car", sets:1, reps:"5 por dirección y pierna", rest:0, d:"A cuatro apoyos, dibuja con la rodilla el círculo más grande posible sin mover la pelvis."},
+     {n:"Tobillos y rodillas", img:"tobillo_car", sets:1, reps:"5 por dirección y pierna", rest:0, d:"Sobre una pierna, círculos lentos de tobillo y después de rodilla."}
+   ]},
+   {name:"Animal movement flow", mins:"15 min", rounds:3, roundRest:60, note:"3 rondas seguidas. Entre ejercicios, transición corta.", ex:[
+     {n:"Beast", img:"beast", sets:1, reps:"20 s quieto + 30 s moviéndote", work:50, rest:15, d:"Cuadrupedia con las rodillas a un palmo del suelo y la espalda plana. Mantén y luego avanza, retrocede y ve en lateral."},
+     {n:"Bear crawl", img:"bear", sets:1, reps:"40 s", work:40, rest:15, d:"Como el beast pero caminando: mano y pie contrarios a la vez, caderas estables."},
+     {n:"Cangrejo con alcance", img:"cangrejo", sets:1, reps:"30 s por lado", work:30, sides:true, rest:15, d:"Postura de mesa, caderas arriba. Levanta un brazo por encima de la cabeza mirándolo."},
+     {n:"Lagarto", img:"lagarto", sets:1, reps:"30 s por lado", work:30, sides:true, rest:15, d:"Desde el bear crawl, pie al exterior de la mano y pecho hacia el suelo. Alterna mientras avanzas."},
+     {n:"Mono", img:"mono", sets:1, reps:"40 s", work:40, rest:15, d:"Sentadilla profunda con manos en el suelo. Saltos cortos laterales a ras de suelo, cabeza arriba."},
+     {n:"Rana", img:"rana", sets:1, reps:"10-12 balanceos", rest:15, d:"Sentadilla ancha con manos en el suelo. Balancea la cadera adelante y atrás empujando las rodillas fuera."},
+     {n:"Transición beast, giro, cangrejo", img:"transicion", sets:1, reps:"6 por lado", rest:15, d:"Desde beast, gira el pecho al techo pasando el brazo por debajo y termina en cangrejo. Vuelve igual."}
+   ]},
+   {name:"Ronda de derribos", mins:"5-7 min", note:"Si llegas cansado, sáltate este bloque.", ex:[
+     {n:"Duckwalk", img:"duckwalk", sets:2, reps:"10-15 pasos", rest:30, d:"En sentadilla profunda, camina hacia delante con caderas abajo y espalda recta."},
+     {n:"Combo derribo y sprawl", img:"derribo", sets:3, reps:"6 combos por lado", rest:60, d:"Entras a derribo, cambias de dirección, sprawl y vuelves a entrar. El combo completo cuenta como una repetición."}
+   ]},
+   {name:"Cadera, columna y hombros", mins:"15 min", ex:[
+     {n:"90/90 de cadera", img:"90_90", sets:1, reps:"5 transiciones + 3 lift-offs por lado", rest:0, d:"Una pierna a 90° delante y otra a 90° detrás. Pasa de lado sin manos y luego despega la rodilla de atrás."},
+     {n:"Sentadilla profunda con kettlebell", img:"goblet", sets:1, reps:"1 min abajo", work:60, rest:0, d:"Kettlebell pegada al pecho como contrapeso. Codos empujando rodillas hacia fuera, pecho alto."},
+     {n:"Cossack squat", img:"cossack", sets:1, reps:"8 por lado, lento", rest:0, d:"Piernas muy abiertas. Baja sobre una pierna con la otra estirada y la punta arriba. Talón pegado al suelo."},
+     {n:"Couch stretch", img:"couch", sets:1, reps:"1 min por lado", work:60, sides:true, rest:0, d:"Espinilla apoyada en la pared, sube el torso y aprieta el glúteo. Abre el flexor de cadera para patadas altas."},
+     {n:"Colgado en barra", img:"hang", sets:3, reps:"30 s", work:30, rest:30, d:"Primero pasivo y relajado, luego activo: baja y lleva atrás las escápulas sin doblar codos."},
+     {n:"Pases de hombro con goma", img:"dislocate", sets:1, reps:"10-15", rest:0, d:"Goma agarrada ancho, brazos estirados, de delante a atrás por encima de la cabeza. Si doblas codos, abre el agarre."},
+     {n:"Extensión torácica en barra", img:"toracica", sets:3, reps:"30 s", work:30, rest:20, d:"Manos en la barra, caderas atrás, brazos estirados. Empuja el pecho hacia el suelo."},
+     {n:"Pancake con contracción-relajación", img:"pancake", sets:3, reps:"5 s empuja + relaja", rest:20, d:"Piernas abiertas, inclínate hasta tu límite, empuja 5 s el suelo con las piernas, relaja y gana un poco más."}
+   ]},
+   {name:"Enfriamiento", mins:"5 min", ex:[
+     {n:"Postura del niño", img:"nino", sets:1, reps:"2-3 min", work:150, rest:0, d:"Respiración nasal lenta. Después, estira suave lo que te haya quedado más cargado."}
+   ]}
+  ],
+  tips:["Calidad sobre rango: si compensas o duele la articulación, vas demasiado lejos.","Los CARs puedes hacerlos a diario, aunque sean 5 minutos.","El couch stretch y el 90/90 son los que más abren cadera para patear alto."]
+ },
+ {k:"木", s:"Jue", jp:"木曜日", name:"Jueves", title:"Taekwondo", dur:"20 min + la clase",
+  what:"Clase en el gimnasio. Aquí solo preparas el cuerpo antes y lo recuperas después.",
+  blocks:[
+   {name:"Antes de la clase", mins:"10 min", note:"En casa o al llegar al gimnasio, sobre todo si la clase calienta poco la cadera.", ex:[
+     {n:"CARs de cadera, rodilla y tobillo", img:"cadera_car", sets:1, reps:"5 por dirección", rest:0, d:"Círculos lentos al máximo rango. La cadera es lo que más vas a usar hoy."},
+     {n:"Balanceos de pierna", img:"movilidad_dinamica", sets:1, reps:"10 por pierna y dirección", rest:0, d:"Adelante-atrás y laterales, subiendo la altura poco a poco. Prepara la cadera para patear alto sin tirones."},
+     {n:"Cossack squat", img:"cossack", sets:1, reps:"6 por lado", rest:0, d:"Lento, abriendo aductores para las patadas laterales y circulares."},
+     {n:"Comba o skipping", img:"comba", sets:1, reps:"2 min", work:120, rest:0, d:"Activa tobillos y pulsaciones antes de entrar."}
+   ]},
+   {name:"Clase de taekwondo", mins:"lo que dure", ex:[
+     {n:"Clase", img:"patada", sets:1, reps:"a tope", rest:0, d:"Escucha, aprende y suda. Todo lo de fuera del gimnasio está pensado para que llegues aquí fresco."}
+   ]},
+   {name:"Después de la clase", mins:"10 min", ex:[
+     {n:"Couch stretch", img:"couch", sets:1, reps:"1 min por lado", work:60, sides:true, rest:0, d:"Espinilla en la pared y glúteo apretado. Descarga el flexor de cadera después de tantas patadas."},
+     {n:"90/90 de cadera", img:"90_90", sets:1, reps:"5 transiciones por lado", rest:0, d:"Despacio y sin manos. Recupera la rotación de cadera."},
+     {n:"Pancake suave", img:"pancake", sets:1, reps:"1 min", work:60, rest:0, d:"Piernas abiertas e inclínate sin forzar. Hoy no buscamos ganar rango, solo soltar."},
+     {n:"Respiración nasal", img:"meditacion", sets:1, reps:"2 min", work:120, rest:0, d:"Inspira 4 s, retén 4 s, suelta 6 s. Baja revoluciones."}
+   ]}
+  ],
+  tips:["Si sales reventado, el estiramiento de después es lo único que no te saltas.","Come algo con proteína y bebe agua al salir.","Apunta lo que te corrijan los instructores: lo repasamos en sombra el viernes."]
+ },
+ {k:"金", s:"Vie", jp:"金曜日", name:"Viernes", title:"Puños, tren superior y core", dur:"55-60 min",
+  what:"Saco solo de puños (las patadas ya las haces en taekwondo), agarre y core. Las piernas descansan.",
+  blocks:[
+   {name:"Calentamiento", mins:"8 min", ex:[
+     {n:"Comba o skipping", img:"comba", sets:1, reps:"3 min", work:180, rest:0, d:"Ritmo suave y constante."},
+     {n:"CARs de hombro, codo y muñeca", img:"car_hombro", sets:1, reps:"5 por dirección", rest:0, d:"Lentos y con tensión."},
+     {n:"Sombra suave", img:"sombra", sets:1, reps:"2 min", work:120, rest:0, d:"Repasa en sombra lo que te hayan corregido en taekwondo esta semana."}
+   ]},
+   {name:"Saco: puños", mins:"15 min", ex:[
+     {n:"Combinaciones de puños en el saco", img:"saco_golpe", sets:4, reps:"4 rondas de 2 min", work:120, rest:60, d:"Jab, directo, ganchos y crochets. Golpe limpio y vuelta rápida a guardia: en MMA vas a necesitar las manos."},
+     {n:"Puños a máxima potencia", img:"saco_golpe", sets:4, reps:"10 golpes", rest:60, d:"Combinación corta de 2-3 golpes, todo o nada, girando cadera."}
+   ]},
+   {name:"Fuerza y agarre", mins:"18 min", ex:[
+     {n:"Dominadas en anillas, tempo lento", img:"dominada_anillas", sets:3, reps:"6-8 (3 s bajando)", rest:75, d:"Sube firme y baja contando 3 segundos."},
+     {n:"Fondos en anillas, tempo lento", img:"fondos_anillas", sets:3, reps:"8", rest:75, d:"Baja en 3 s controlando la inestabilidad."},
+     {n:"Remo invertido", img:"remo_invertido", sets:3, reps:"10", rest:60, d:"En barra baja, cuerpo recto, pecho a la barra."},
+     {n:"Colgado con toallas", img:"colgado_toallas", sets:3, reps:"20-30 s", work:25, rest:60, d:"Dos toallas por encima de la barra y agárrate de ellas. Agarre de ropa puro."},
+     {n:"Handgrips", img:"handgrip", sets:3, reps:"15-20 s por mano", work:20, sides:true, rest:45, d:"Aprieta al máximo y aguanta cerrados."}
+   ]},
+   {name:"Core", mins:"10 min", ex:[
+     {n:"Hollow hold", img:"hollow", sets:3, reps:"25-30 s", work:30, rest:30, d:"Brazos y piernas despegados, zona lumbar pegada al suelo."},
+     {n:"L-sit", img:"lsit", sets:3, reps:"15-20 s", work:18, rest:45, d:"En los fondos, anillas o suelo. Rodillas dobladas si aún no llegas."},
+     {n:"Plancha respirando bajo fatiga", img:"plancha", sets:2, reps:"45 s", work:45, rest:45, d:"Respira controlado sin aguantar el aire. Te prepara para sostener tensión debajo de alguien."}
+   ]},
+   {name:"Cierre", mins:"4 min", ex:[
+     {n:"Estiramiento de pecho, dorsal y antebrazo", img:"estir_pecho", sets:1, reps:"2 min", work:120, rest:0, d:"Suave, sin rebotes."}
+   ]}
+  ],
+  tips:["Ni una sentadilla hoy: vienes del taekwondo del jueves y mañana hay sprints.","Tres agarres distintos: anillas, toallas y handgrips. Oro para el grappling."]
+ },
+ {k:"土", s:"Sáb", jp:"土曜日", name:"Sábado", title:"Sprints y fuerza de piernas", dur:"50 min",
+  what:"Velocidad primero, con las piernas frescas, y después fuerza a una pierna.",
+  blocks:[
+   {name:"Calentamiento", mins:"10 min", ex:[
+     {n:"Trote suave", img:"trote", sets:1, reps:"5 min", work:300, rest:0, d:"Ritmo cómodo, que puedas hablar."},
+     {n:"Movilidad dinámica", img:"movilidad_dinamica", sets:1, reps:"balanceos y zancadas con giro", rest:0, d:"Balanceos de pierna adelante-atrás y laterales, y zancadas girando el tronco."},
+     {n:"Progresiones de trote a sprint", img:"sprint", sets:3, reps:"1 progresión", rest:45, d:"Empieza trotando y acelera hasta casi sprint."}
+   ]},
+   {name:"Escaleras", mins:"15 min", ex:[
+     {n:"Sprint subiendo escaleras", img:"escaleras", sets:6, reps:"1 subida completa", rest:90, d:"Máxima intensidad pisando con todo el pie. Baja SIEMPRE andando: la bajada es tu descanso."}
+   ]},
+   {name:"Fuerza de piernas", mins:"18 min", note:"Después de los sprints: aquí busca fuerza y control, no velocidad.", ex:[
+     {n:"Swings de kettlebell", img:"swing_kb", sets:4, reps:"12", rest:75, d:"La fuerza sale de la cadera. Bisagra atrás y golpe de cadera hasta la altura del pecho."},
+     {n:"Zancada búlgara", img:"bulgara", sets:3, reps:"6-8 por pierna", rest:90, d:"Pie trasero en una barra baja o en los fondos. Baja controlado y sube fuerte. Chaleco cuando te salga fácil."},
+     {n:"Pistol squat (progresión)", img:"pistol", sets:3, reps:"5 por pierna", rest:90, d:"Apóyate en pared o barra hasta dominarlo. Fuerza a una pierna y equilibrio para patear."}
+   ]},
+   {name:"Vuelta a la calma", mins:"7 min", ex:[
+     {n:"Caminar", img:"caminar", sets:1, reps:"5 min", work:300, rest:0, d:"Paso tranquilo, recupera el aire."},
+     {n:"Estiramiento de piernas", img:"estir_cuad", sets:1, reps:"2 min", work:120, rest:0, d:"Isquios, gemelo y cuádriceps, suave."}
+   ]}
+  ],
+  tips:["Sprints antes que fuerza: la velocidad se entrena fresco.","Si las escaleras te dejan vacío, recorta la fuerza a 2 series. Mañana es descanso.","Desde aquí hasta el taekwondo del martes hay tres días de margen para las piernas."]
+ },
+ {k:"日", s:"Dom", jp:"日曜日", name:"Domingo", title:"Recuperación y cuello", dur:"50-60 min",
+  what:"Caminar, cuello estilo daghestaní y trabajo mental.",
+  blocks:[
+   {name:"Recuperación activa", mins:"30-40 min", ex:[
+     {n:"Caminata tranquila", img:"caminar", sets:1, reps:"30-40 min", work:1800, rest:0, d:"Paso tranquilo y respiración nasal. Sin esfuerzo: hoy se recupera."}
+   ]},
+   {name:"Cuello estilo daghestaní", mins:"12 min", note:"Para al momento si notas hormigueo, mareo o dolor agudo.", ex:[
+     {n:"Círculos de cuello", img:"cuello_circ", sets:1, reps:"5 por dirección", rest:0, d:"Muy suaves, para preparar el cuello."},
+     {n:"Puente frontal", img:"puente_frontal", sets:3, reps:"15-20 s", work:18, rest:30, d:"Apoyo en la frente, cuerpo recto. Usa las manos en el suelo para quitar carga si lo necesitas."},
+     {n:"Puente trasero", img:"puente_trasero", sets:3, reps:"15-20 s", work:18, rest:30, d:"Apoyo en lo alto de la cabeza, pies firmes, cadera arriba."},
+     {n:"Puente lateral derecho", img:"puente_lateral", sets:3, reps:"10-15 s", work:12, rest:30, d:"El más delicado. Empieza con 5-8 s y sube solo cuando esté totalmente estable."},
+     {n:"Puente lateral izquierdo", img:"puente_lateral", sets:3, reps:"10-15 s", work:12, rest:30, d:"Igual que el derecho: poco tiempo y mucho control."},
+     {n:"Puente con balanceo", img:"puente_balanceo", sets:1, reps:"2-3 rondas muy lentas", rest:0, d:"Solo cuando los 4 puentes estáticos te salgan sobrados. Rueda de un puente a otro sin perder el apoyo."},
+     {n:"Isométricos manuales", img:"cuello_manual", sets:1, reps:"10 s por dirección", rest:0, d:"Empuja con la mano contra frente, nuca y laterales sin dejar que la cabeza se mueva. Relaja tras la carga."}
+   ]},
+   {name:"Mente", mins:"15 min", ex:[
+     {n:"Meditación 4-4-6", img:"meditacion", sets:1, reps:"10 min", work:600, rest:0, d:"Inspira 4 s, retén 4 s, suelta 6 s. Entrena tu calma para cuando hay presión de verdad."},
+     {n:"Visualización", img:"meditacion", sets:1, reps:"5 min", work:300, rest:0, d:"Mejor antes de dormir. Imagina situaciones de pelea y cómo respondes con calma y técnica."}
+   ]}
+  ],
+  tips:["No metas nada más aquí: el domingo es donde se consolida la semana.","Puentes laterales con muy poco tiempo al principio. No hay prisa."]
+ }
+];
+
+/* ---------------- helpers ---------------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fig = (key, label) => `<svg class="fig" viewBox="0 0 100 75" role="img" aria-label="${esc(label||'')}">${POSES[key]||""}</svg>`;
+const fmt = s => { s=Math.max(0,Math.ceil(s)); const m=Math.floor(s/60), r=s%60; return m? `${m}:${String(r).padStart(2,"0")}` : `${r}`; };
+const fmtLong = s => { s=Math.max(0,Math.ceil(s)); const m=Math.floor(s/60), r=s%60; return `${m}:${String(r).padStart(2,"0")}`; };
+const todayKey = () => { const d=new Date(); return `dojo-done-${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`; };
+function loadDone(){ try{ return new Set(JSON.parse(localStorage.getItem(todayKey())||"[]")); }catch(e){ return new Set(); } }
+function saveDone(set){ try{ localStorage.setItem(todayKey(), JSON.stringify([...set])); }catch(e){} }
+let DONE = loadDone();
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.style.display="block"; clearTimeout(toast._t); toast._t=setTimeout(()=>t.style.display="none",1800); }
+
+/* ---------------- sakura ---------------- */
+(function sakura(){
+  let seed=7; const rnd=()=>{ seed=(seed*16807)%2147483647; return (seed-1)/2147483646; };
+  const pts=[[118,88],[122,136],[150,98],[176,92],[206,64],[214,104],[240,112],[214,160],[230,82],[272,28],[290,44],[312,58],[300,80],[404,40],[372,62],[262,122],[140,74],[190,110],[330,110],[256,58]];
+  const cols=["#f7c6d3","#f3b0c3","#ee9ab2","#fadbe3","#e7839f","#f9d0dc"];
+  let h="";
+  pts.forEach(([x,y])=>{ const n=7+Math.floor(rnd()*7);
+    for(let i=0;i<n;i++){ const a=rnd()*6.283, r=rnd()*20, s=7+rnd()*8;
+      h+=`<use href="#fl" x="${(x+Math.cos(a)*r-s/2).toFixed(1)}" y="${(y+Math.sin(a)*r*.8-s/2).toFixed(1)}" width="${s.toFixed(1)}" height="${s.toFixed(1)}" style="color:${cols[Math.floor(rnd()*cols.length)]}" transform="rotate(${Math.floor(rnd()*70)} ${x} ${y})"/>`; } });
+  document.getElementById("blooms").innerHTML=h;
+  const mk=(el,n)=>{ let p=""; for(let i=0;i<n;i++){ p+=`<span class="petal" style="left:${(8+Math.random()*92).toFixed(1)}%;animation-duration:${(8+Math.random()*9).toFixed(1)}s;animation-delay:-${(Math.random()*14).toFixed(1)}s;transform:scale(${(.7+Math.random()*.6).toFixed(2)})"></span>`; } el.innerHTML=p; };
+  mk(document.getElementById("petals"),14);
+  mk(document.getElementById("sPetals"),18);
+})();
+
+/* ---------------- day view ---------------- */
+let cur = (new Date().getDay()+6)%7;
+const todayIdx = (new Date().getDay()+6)%7;
+function renderPlaques(){
+  $("#plaques").innerHTML = DAYS.map((d,i)=>`<button class="plaque" role="tab" aria-selected="${i===cur}" aria-label="${d.name}: ${d.title}" data-i="${i}">
+    <span class="k">${d.k}</span><span class="s">${d.s}</span>${i===todayIdx?'<span class="today" aria-hidden="true">今</span>':''}</button>`).join("");
+}
+$("#plaques").addEventListener("click",e=>{ const b=e.target.closest(".plaque"); if(!b) return; cur=+b.dataset.i; renderPlaques(); renderDay(); });
+
+function exId(di,bi,ei){ return `${di}-${bi}-${ei}`; }
+function doseText(ex){ return ex.sets>1 ? `${ex.sets} × ${ex.reps}` : ex.reps; }
+function countEx(d){ return d.blocks.reduce((a,b)=>a+b.ex.length,0); }
+function renderDay(){
+  const d=DAYS[cur]; const total=countEx(d);
+  const done=d.blocks.reduce((a,b,bi)=>a+b.ex.filter((_,ei)=>DONE.has(exId(cur,bi,ei))).length,0);
+  let h=`<section class="dayhead"><div class="jp">${d.jp}</div><h2>${d.name}: ${d.title}</h2><p class="what">${d.what}</p>
+    <div class="row"><span class="meta">Unos ${d.dur}${cur===todayIdx?` · hoy llevas ${done} de ${total}`:""}</span>
+    <button class="btn btn-main" data-start="0-0">Empezar entrenamiento</button></div></section>`;
+  d.blocks.forEach((b,bi)=>{
+    h+=`<section class="block"><h3><span>${b.name}</span><small>${b.mins}${b.rounds?` · ${b.rounds} rondas`:""}</small></h3>${b.note?`<p class="bnote">${b.note}</p>`:""}`;
+    b.ex.forEach((ex,ei)=>{ const id=exId(cur,bi,ei); const isDone=DONE.has(id);
+      const restTxt = ex.rest? (ex.sets>1||b.rounds? `descanso ${ex.rest} s`:"") : "";
+      h+=`<article class="ex${isDone?" done":""}">
+        <div class="pic">${fig(ex.img, ex.n)}</div>
+        <div><h4>${ex.n}</h4><p class="dose">${doseText(ex)}${ex.work?" ⏱":""}</p>${restTxt?`<span class="rest">${restTxt}</span>`:""}</div>
+        <p class="desc">${ex.d}</p>
+        <div class="acts"><button class="go" data-start="${bi}-${ei}">▶ Empezar aquí</button>
+        <button class="check" data-check="${id}" aria-pressed="${isDone}"><span class="box">${isDone?"✓":""}</span>Hecho</button></div>
+      </article>`; });
+    h+=`</section>`;
+  });
+  h+=`<section class="tips"><h3>Consejos del sensei</h3><ul>${d.tips.map(t=>`<li>${t}</li>`).join("")}</ul></section>`;
+  $("#day").innerHTML=h;
+}
+$("#day").addEventListener("click",e=>{
+  const s=e.target.closest("[data-start]"); if(s){ const [bi,ei]=s.dataset.start.split("-").map(Number); startSession(cur,bi,ei); return; }
+  const c=e.target.closest("[data-check]"); if(c){ const id=c.dataset.check; DONE.has(id)?DONE.delete(id):DONE.add(id); saveDone(DONE); renderDay(); }
+});
+
+/* ---------------- audio / wake lock ---------------- */
+let actx=null, soundOn=true, wake=null;
+function ensureAudio(){ try{ if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)(); if(actx.state==="suspended") actx.resume(); }catch(e){} }
+function beep(f=660,dur=.12,vol=.18){ if(!soundOn||!actx) return; try{ const o=actx.createOscillator(), g=actx.createGain(); o.type="sine"; o.frequency.value=f; g.gain.setValueAtTime(vol,actx.currentTime); g.gain.exponentialRampToValueAtTime(.0001,actx.currentTime+dur); o.connect(g).connect(actx.destination); o.start(); o.stop(actx.currentTime+dur+.02);}catch(e){} }
+function gong(){ beep(880,.35,.22); setTimeout(()=>beep(1175,.45,.18),160); try{navigator.vibrate&&navigator.vibrate([120,60,120])}catch(e){} }
+async function lockScreen(){ try{ if("wakeLock" in navigator) wake=await navigator.wakeLock.request("screen"); }catch(e){} }
+function unlockScreen(){ try{ wake&&wake.release(); }catch(e){} wake=null; }
+document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible"&&S.open) lockScreen(); });
+
+/* ---------------- session engine ---------------- */
+const S={open:false,steps:[],i:0,day:0,t:null,startedAt:0,lastCheer:-1};
+const T={mode:"idle",total:0,remain:0,endAt:0,lastBeep:null,elapsed0:0,swStart:0};
+let tickH=null;
+
+function buildSteps(di){
+  const d=DAYS[di]; const steps=[];
+  const work=(ex,bi,ei,o)=>{
+    const base={kind:"work",ex,bi,ei,set:o.set,sets:o.sets,round:o.round,rounds:o.rounds,block:d.blocks[bi].name};
+    if(ex.work&&ex.sides){
+      steps.push({...base,side:"Lado derecho",timed:ex.work,last:false});
+      steps.push({kind:"rest",sec:5,label:"Cambia de lado",cheer:false});
+      steps.push({...base,side:"Lado izquierdo",timed:ex.work,last:o.last});
+    } else steps.push({...base,timed:ex.work||null,last:o.last});
+  };
+  d.blocks.forEach((b,bi)=>{
+    if(b.rounds){
+      for(let r=1;r<=b.rounds;r++){
+        b.ex.forEach((ex,ei)=>{
+          work(ex,bi,ei,{set:1,sets:1,round:r,rounds:b.rounds,last:r===b.rounds});
+          if(ei<b.ex.length-1) steps.push({kind:"rest",sec:ex.rest||15,label:"Transición",cheer:true});
+          else steps.push({kind:"rest",sec:b.roundRest||60,label:r<b.rounds?"Descanso entre rondas":"Siguiente ejercicio",cheer:true});
+        });
+      }
+    } else {
+      b.ex.forEach((ex,ei)=>{
+        for(let s=1;s<=ex.sets;s++){
+          work(ex,bi,ei,{set:s,sets:ex.sets,last:s===ex.sets});
+          if(s<ex.sets) steps.push({kind:"rest",sec:ex.rest||20,label:"Descanso",cheer:true});
+        }
+        steps.push({kind:"rest",sec:Math.max(ex.rest||0,20),label:"Siguiente ejercicio",cheer:true});
+      });
+    }
+  });
+  while(steps.length&&steps[steps.length-1].kind==="rest") steps.pop();
+  steps.push({kind:"finish"});
+  let nxt=null; for(let i=steps.length-1;i>=0;i--){ if(steps[i].kind==="work") nxt=steps[i]; else if(steps[i].kind==="rest") steps[i].next=nxt; }
+  return steps;
+}
+
+function startSession(di,bi,ei){
+  ensureAudio();
+  S.day=di; S.steps=buildSteps(di);
+  S.i=Math.max(0,S.steps.findIndex(s=>s.kind==="work"&&s.bi===bi&&s.ei===ei));
+  S.open=true; S.startedAt=Date.now();
+  $("#session").classList.add("open"); $("#session").classList.remove("fin");
+  document.body.style.overflow="hidden";
+  lockScreen(); enterStep(false);
+}
+function closeSession(){
+  stopTimer(); S.open=false; $("#session").classList.remove("open","fin");
+  document.body.style.overflow=""; unlockScreen(); renderDay();
+}
+$("#sClose").onclick=()=>{ if(S.steps[S.i]&&S.steps[S.i].kind==="finish"){ closeSession(); return; } $("#ask").classList.add("open"); $("#askNo").focus(); };
+$("#askNo").onclick=()=>$("#ask").classList.remove("open");
+$("#askYes").onclick=()=>{ $("#ask").classList.remove("open"); closeSession(); };
+$("#ask").addEventListener("click",e=>{ if(e.target.id==="ask") $("#ask").classList.remove("open"); });
+$("#sSound").onclick=()=>{ soundOn=!soundOn; $("#sSound").textContent=soundOn?"🔔":"🔕"; $("#sSound").setAttribute("aria-label",soundOn?"Sonido activado":"Sonido desactivado"); };
+
+function stopTimer(){ clearInterval(tickH); tickH=null; T.mode="idle"; }
+function startCountdown(sec,mode){ stopTimer(); T.mode=mode; T.total=sec; T.remain=sec; T.endAt=performance.now()+sec*1000; T.lastBeep=null; tickH=setInterval(tick,100); tick(); }
+function startStopwatch(){ stopTimer(); T.mode="sw"; T.swStart=performance.now(); tickH=setInterval(tick,250); tick(); }
+
+function tick(){
+  const st=S.steps[S.i];
+  if(T.mode==="run"||T.mode==="rest"||T.mode==="prep"){
+    T.remain=(T.endAt-performance.now())/1000;
+    const whole=Math.ceil(T.remain);
+    if(whole<=3&&whole>=1&&T.lastBeep!==whole){ T.lastBeep=whole; beep(T.mode==="prep"?520:600,.1); }
+    if(T.remain<=0){
+      if(T.mode==="prep"){ gong(); startCountdown(st.timed,"run"); const l=$("#tLbl"); if(l) l.textContent=st.timed>=60?"minutos":"segundos"; paintBar(); return; }
+      gong(); stopTimer(); advance(true); return;
+    }
+  }
+  paintTimer();
+}
+function paintTimer(){
+  const num=$("#tNum"), fg=$("#tFg"); if(!num||!fg) return;
+  const C=2*Math.PI*86;
+  if(T.mode==="sw"){ num.textContent=fmtLong((performance.now()-T.swStart)/1000); fg.style.strokeDashoffset=C; fg.style.opacity=0; return; }
+  fg.style.opacity=1;
+  if(T.mode==="idle"||T.mode==="pause"){ const st=S.steps[S.i]; if(st.kind==="work"&&st.timed&&T.mode==="idle"){ num.textContent=fmt(st.timed); fg.style.strokeDashoffset=0; } else if(T.mode==="pause"){ num.textContent=fmt(T.remain); } return; }
+  if(T.mode==="prep"){ num.textContent=Math.ceil(T.remain); fg.style.strokeDashoffset=C*(1-T.remain/3); return; }
+  num.textContent=fmt(T.remain);
+  fg.style.strokeDashoffset = C*(1-Math.max(0,T.remain)/T.total);
+}
+
+function advance(auto){
+  const st=S.steps[S.i];
+  if(st&&st.kind==="work"&&st.last){ DONE.add(exId(S.day,st.bi,st.ei)); saveDone(DONE); }
+  S.i=Math.min(S.i+1,S.steps.length-1); enterStep(auto);
+}
+function goBack(){ stopTimer(); let j=S.i-1; while(j>0&&S.steps[j].kind!=="work") j--; S.i=Math.max(0,j); enterStep(false); }
+
+function pickCheer(){
+  if(Math.random()<0.2){ return {special:SPECIAL[Math.floor(Math.random()*SPECIAL.length)]}; }
+  let k; do{ k=Math.floor(Math.random()*CHEERS.length);}while(k===S.lastCheer&&CHEERS.length>1); S.lastCheer=k; return CHEERS[k];
+}
+const ensoSVG = cls => `<div class="enso ${cls||""}"><svg viewBox="0 0 200 200" aria-hidden="true">
+  <defs><filter id="brush"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="4"/></filter></defs>
+  <circle class="bg" cx="100" cy="100" r="86"/>
+  <circle class="fg" id="tFg" cx="100" cy="100" r="86" filter="url(#brush)" stroke-dasharray="${(2*Math.PI*86).toFixed(1)}" stroke-dashoffset="0"/></svg>
+  <div class="mid"><div class="num" id="tNum"></div><div class="lbl" id="tLbl"></div></div></div>`;
+
+function stepCount(){
+  const works=S.steps.filter(s=>s.kind==="work"); const seen=new Set(); let idx=0, tot=0;
+  works.forEach(w=>{ const k=w.bi+"-"+w.ei; if(!seen.has(k)){ seen.add(k); tot++; } });
+  const seen2=new Set(); for(let j=0;j<=S.i;j++){ const s=S.steps[j]; if(s.kind==="work"){ seen2.add(s.bi+"-"+s.ei);} } idx=seen2.size;
+  return {idx,tot};
+}
+function enterStep(auto){
+  stopTimer();
+  const st=S.steps[S.i], d=DAYS[S.day];
+  $("#sDay").textContent=`${d.name}: ${d.title}`;
+  const c=stepCount(); $("#sCount").textContent= st.kind==="finish" ? "Entrenamiento terminado" : `Ejercicio ${Math.max(1,c.idx)} de ${c.tot}`;
+  $("#sProg").style.width = `${Math.round(100*S.i/(S.steps.length-1))}%`;
+  const body=$("#sBody");
+  if(st.kind==="work"){
+    const ex=st.ex; const chips=[];
+    if(st.rounds) chips.push(`<span class="chip">Ronda ${st.round} de ${st.rounds}</span>`);
+    if(st.sets>1) chips.push(`<span class="chip hot">Serie ${st.set} de ${st.sets}</span>`);
+    if(st.side) chips.push(`<span class="chip hot">${st.side}</span>`);
+    body.innerHTML=`<div class="s-pic">${fig(ex.img,ex.n)}</div><p class="s-block">${esc(st.block)}</p>
+      <h2 class="s-name">${ex.n}</h2><div class="chips">${chips.join("")}<span class="chip">${esc(/^[\d\-]+$/.test(ex.reps)?ex.reps+" reps":ex.reps)}</span></div>
+      ${ensoSVG("")}<p class="s-desc">${ex.d}</p>`;
+    if(st.timed){ $("#tLbl").textContent="segundos"; if(st.timed>=60) $("#tLbl").textContent="minutos"; }
+    else { $("#tLbl").textContent="tiempo de la serie"; }
+    if(st.timed){ if(auto) startCountdown(st.timed,"run"); else { T.mode="idle"; paintTimer(); } }
+    else startStopwatch();
+  } else if(st.kind==="rest"){
+    let cheerHTML="";
+    if(st.cheer){ const c=pickCheer();
+      cheerHTML = c.special ? `<div class="cheer special cheer-anim"><div class="big">${esc(c.special.big)}</div><div class="who">${esc(c.special.who)}</div></div>`
+        : `<div class="cheer cheer-anim"><div class="v" lang="ja">${c.jp}</div><div class="h"><div class="ro">${c.ro}</div><div class="es">${c.es}</div></div></div>`;
+    } else cheerHTML=`<h2 class="s-name" style="margin-top:14px">${st.label}</h2><p class="s-block" style="margin:0 0 4px">Respira por la nariz y suelta los hombros.</p>`;
+    const n=st.next;
+    const nextHTML = n ? `<div class="next"><div class="np">${fig(n.ex.img,n.ex.n)}</div><div><small>Siguiente${n.sets>1?` · serie ${n.set} de ${n.sets}`:""}${n.side?` · ${n.side.toLowerCase()}`:""}</small><b>${n.ex.n}</b></div></div>` : "";
+    body.innerHTML = cheerHTML + ensoSVG("rest") + nextHTML;
+    $("#tLbl").textContent = st.cheer ? st.label.toLowerCase() : "descanso";
+    startCountdown(st.sec,"rest");
+  } else {
+    const mins=Math.max(1,Math.round((Date.now()-S.startedAt)/60000));
+    body.innerHTML=`<div class="finish"><div class="big" lang="ja">お疲れ様でした</div><p><b>Otsukaresama deshita.</b> Buen trabajo: ${DAYS[S.day].name.toLowerCase()} completado en ${mins} min.</p><p>${Math.random()<.5?"They don't know me, son!":"¿Entonces ellos ganan? Hoy no."}</p></div>`;
+    $("#session").classList.add("fin"); gong();
+  }
+  paintBar();
+}
+function paintBar(){
+  const st=S.steps[S.i], bar=$("#sBar");
+  const prev=`<button class="btn btn-soft" id="bPrev" ${S.i===0?"disabled":""}>Anterior</button>`;
+  if(st.kind==="work"){
+    let main;
+    if(st.timed){ main = T.mode==="run" ? "Pausa" : T.mode==="pause" ? "Seguir" : T.mode==="prep" ? "Prepárate…" : "Empezar"; }
+    else main = st.sets>1 ? "Serie hecha ✓" : "Hecho ✓";
+    bar.innerHTML=`${prev}<button class="btn btn-main" id="bMain">${main}</button><button class="btn btn-soft" id="bSkip">Saltar</button>`;
+  } else if(st.kind==="rest"){
+    bar.innerHTML=`${prev}<button class="btn btn-main" id="bSkip">Saltar descanso</button><button class="btn btn-soft" id="bAdd">+15 s</button>`;
+  } else {
+    bar.innerHTML=`<span></span><button class="btn btn-main" id="bEnd">Volver al plan</button><span></span>`;
+  }
+  const on=(id,f)=>{ const el=document.getElementById(id); if(el) el.onclick=f; };
+  on("bPrev",()=>goBack());
+  on("bSkip",()=>{ stopTimer(); advance(false); });
+  on("bAdd",()=>{ T.endAt+=15000; T.total+=15; });
+  on("bEnd",()=>closeSession());
+  on("bMain",()=>{
+    ensureAudio();
+    if(!st.timed){ advance(false); return; }
+    if(T.mode==="run"){ T.remain=(T.endAt-performance.now())/1000; clearInterval(tickH); tickH=null; T.mode="pause"; }
+    else if(T.mode==="pause"){ T.endAt=performance.now()+T.remain*1000; T.mode="run"; tickH=setInterval(tick,100); }
+    else if(T.mode==="idle"){ startCountdown(3,"prep"); $("#tLbl").textContent="prepárate"; }
+    paintBar(); paintTimer();
+  });
+}
+
+/* ---------------- boot ---------------- */
+renderPlaques(); renderDay();
+/* ---------------- app instalable ---------------- */
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(()=>{}));
+}
+</script>
+</body>
+</html>
